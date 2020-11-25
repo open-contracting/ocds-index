@@ -8,7 +8,7 @@ If you are viewing this on GitHub or PyPi, open the `full documentation <https:/
    :target: https://pypi.org/project/ocdsindex/
 .. |Build Status| image:: https://github.com/open-contracting/ocds-index/workflows/CI/badge.svg
 .. |Lint Status| image:: https://github.com/open-contracting/ocds-index/workflows/Lint/badge.svg
-.. |Coverage Status| image:: https://coveralls.io/repos/github/open-contracting/ocds-index/badge.svg?branch=master
-   :target: https://coveralls.io/github/open-contracting/ocds-index?branch=master
+.. |Coverage Status| image:: https://coveralls.io/repos/github/open-contracting/ocds-index/badge.svg?branch=main
+   :target: https://coveralls.io/github/open-contracting/ocds-index?branch=main
 .. |Python Version| image:: https://img.shields.io/pypi/pyversions/ocdsindex.svg
    :target: https://pypi.org/project/ocdsindex/
