@@ -9,4 +9,4 @@ def test_get_documents_by_language():
     crawler = Crawler(os.path.join("tests", "fixtures"), "https://standard.open-contracting.org/dev/", extract_sphinx)
     documents = crawler.get_documents_by_language()
 
-    assert documents == expected
+    assert set(documents) == set(expected)

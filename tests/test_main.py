@@ -12,8 +12,9 @@ def test_sphinx():
     base_url = "https://standard.open-contracting.org/dev/"
     result = runner.invoke(main, ["sphinx", os.path.join("tests", "fixtures"), base_url])
 
+    actual = json.loads(result.output)
+
     assert result.exit_code == 0
-    assert json.loads(result.output) == {
-        "base_url": "https://standard.open-contracting.org/dev/",
-        "documents": expected,
-    }
+    assert len(actual) == 2
+    assert actual["base_url"] == "https://standard.open-contracting.org/dev/"
+    assert set(actual["documents"]) == set(expected)
