@@ -15,7 +15,7 @@ setup(
     long_description=long_description,
     install_requires=[
         "click",
-        "elasticsearch",
+        "elasticsearch>=7,<8",
         "lxml",
     ],
     extras_require={
