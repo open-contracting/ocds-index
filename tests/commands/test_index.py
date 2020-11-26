@@ -34,7 +34,7 @@ def test_index(tmpdir):
     with open(os.path.join("tests", "fixtures", "data.json")) as f:
         data = json.load(f)
 
-    host = os.getenv("ELASTICSEARCH_URI", "localhost:9200")
+    host = os.getenv("ELASTICSEARCH_URL", "localhost:9200")
 
     with elasticsearch(host) as es:
         filename.write(json.dumps(data))
