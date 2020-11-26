@@ -5,9 +5,9 @@ list of dicts. Each dict sets these keys:
 url
   The remote URL of the document, which might include a fragment identifier
 title
-  The title of the document, which might be the page title and the section heading
+  The title of the document, which might be the page title and the heading text
 text
-  The text of the document
+  The plain text content of the document
 """
 
 from lxml import etree

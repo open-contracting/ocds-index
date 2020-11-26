@@ -1,13 +1,19 @@
 Command-Line Interface
 ======================
 
+.. _sphinx:
+
 sphinx
 ------
 
 Prints the URL and the documents to index from the OCDS documentation as JSON.
 
-* ``directory``: the directory to crawl
-* ``base-url``: the URL at which the directory will be deployed
+.. code-block:: bash
+
+   ocdsindex sphinx DIRECTORY BASE_URL
+
+-  ``DIRECTORY``: the directory to crawl, containing language directories and HTML files
+-  ``BASE_URL``: the URL of the website whose files are crawled
 
 Example:
 
@@ -15,19 +21,64 @@ Example:
 
    ocdsindex sphinx path/to/standard/build/ https://standard.open-contracting.org/staging/1.1-dev/ > data.json
 
+The output looks like:
+
+.. code-block:: json
+
+   {
+     "base_url": "https://standard.open-contracting.org/staging/1.1-dev/",
+     "documents": {
+       "en": [
+         {
+           "url": "https://standard.open-contracting.org/staging/1.1-dev/en/#about",
+           "title": "Open Contracting Data Standard: Documentation - About",
+           "text": "The Open Contracting Data Standard …"
+         },
+         ...
+       ],
+       ...
+     }
+   }
+
+.. _extension-explorer:
+
 extension-explorer
 ------------------
 
 Prints the URL and the documents to index from the Extension Explorer as JSON.
 
-* ``directory``: the directory to crawl
+.. code-block:: bash
 
-.. note::
+   ocdsindex extension-explorer DIRECTORY
 
-   ``base_url`` is hardcoded to ``https://extensions.open-contracting.org``.
+-  ``DIRECTORY``: the directory to crawl, containing language directories and HTML files
 
 Example:
 
 .. code-block:: bash
 
-   ocdsindex extension-explorer path/to/extension_explorer/build/ > data.json
+   ocdsindex extension-explorer path/to/extension_explorer/build/ path/to/extension_explorer/data/extensions.json > data.json
+
+.. note::
+
+   ``base_url`` is hardcoded to ``https://extensions.open-contracting.org``.
+
+.. _index:
+
+index
+-----
+
+Adds documents to Elasticsearch indices.
+
+.. code-block:: bash
+
+   ocdsindex index FILENAME HOST
+
+-  ``FILENAME``: the file containing the output of the ``sphinx`` or ``extension-explorer`` command
+-  ``HOST``: the connection URI, e.g. ``https://user:pass@host:9200/``
+
+Example:
+
+.. code-block:: bash
+
+   ocdsindex index data.json https://user:pass@host:9200/
