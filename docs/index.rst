@@ -77,6 +77,15 @@ This tool then adds the extracted documents to Elasticsearch indices. This work 
 
 The tool creates a single index for all documents in a given language: for example, ``ocdsindex_es``. As such, an interface can search across all websites in a given language.
 
-It adds two fields to each indexed document: ``_id``, same as ``url``, and ``base_url``, the base URL of the website whose files were crawled. As such, an interface can filter on ``base_url`` to limit results to specific websites.
+It adds three fields to each indexed document:
+
+_id
+  Same as ``url``.
+base_url
+  The base URL of the website whose files were crawled.
+created_at
+  The timestamp at which the files were crawled.
+
+As such, an interface can filter on ``base_url`` to limit results to specific websites, and the tool can filter on ``created_at`` to delete documents that are no longer needed.
 
 Copyright (c) 2020 Open Contracting Partnership, released under the BSD license

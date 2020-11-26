@@ -48,17 +48,19 @@ def test_index(tmpdir):
 
         assert es.indices.get("ocdsindex_en")["ocdsindex_en"]["mappings"] == {
             "properties": {
-                "base_url": {"type": "keyword"},
-                "text": {"analyzer": "english", "type": "text"},
                 "title": {"analyzer": "english", "type": "text"},
+                "text": {"analyzer": "english", "type": "text"},
+                "base_url": {"type": "keyword"},
+                "created_at": {"type": "date"},
                 "url": {"fields": {"keyword": {"ignore_above": 256, "type": "keyword"}}, "type": "text"},
             }
         }
         assert es.indices.get("ocdsindex_es")["ocdsindex_es"]["mappings"] == {
             "properties": {
-                "base_url": {"type": "keyword"},
-                "text": {"analyzer": "spanish", "type": "text"},
                 "title": {"analyzer": "spanish", "type": "text"},
+                "text": {"analyzer": "spanish", "type": "text"},
+                "base_url": {"type": "keyword"},
+                "created_at": {"type": "date"},
                 "url": {"fields": {"keyword": {"ignore_above": 256, "type": "keyword"}}, "type": "text"},
             }
         }
@@ -73,9 +75,10 @@ def test_index(tmpdir):
             "_index": "ocdsindex_en",
             "_score": 1.0,
             "_source": {
-                "base_url": "https://standard.open-contracting.org/dev/",
-                "text": "The Open Contracting Data Standard",
                 "title": "Open Contracting Data Standard: " "Documentation - About",
+                "text": "The Open Contracting Data Standard",
+                "base_url": "https://standard.open-contracting.org/dev/",
+                "created_at": 1577880000,
                 "url": "https://standard.open-contracting.org/dev/en/#about",
             },
             "_type": "_doc",
@@ -85,9 +88,10 @@ def test_index(tmpdir):
             "_index": "ocdsindex_es",
             "_score": 1.0,
             "_source": {
-                "base_url": "https://standard.open-contracting.org/dev/",
-                "text": "El Estándar de Datos de Contratación Abierta",
                 "title": "Estándar de Datos de Contrataciones Abiertas: " "Documentación - Acerca de",
+                "text": "El Estándar de Datos de Contratación Abierta",
+                "base_url": "https://standard.open-contracting.org/dev/",
+                "created_at": 1577880000,
                 "url": "https://standard.open-contracting.org/dev/es/#about",
             },
             "_type": "_doc",

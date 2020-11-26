@@ -1,6 +1,6 @@
 import json
 import sys
-from urllib.parse import urljoin
+import time
 
 import click
 import elasticsearch
@@ -11,7 +11,7 @@ from ocdsindex.extract import extract_extension_explorer, extract_sphinx
 
 def dump(directory, base_url, extract, **kwargs):
     documents = Crawler(directory, base_url, extract, **kwargs).get_documents_by_language()
-    json.dump({"base_url": base_url, "documents": documents}, sys.stdout)
+    json.dump({"base_url": base_url, "created_at": int(time.time()), "documents": documents}, sys.stdout)
 
 
 @click.group()
@@ -66,9 +66,9 @@ def index(filename, host):
     with click.open_file(filename) as f:
         data = json.load(f)
 
-    for language_code, documents in data["documents"].items():
-        es = elasticsearch.Elasticsearch([host])
+    es = elasticsearch.Elasticsearch([host])
 
+    for language_code, documents in data["documents"].items():
         index = f"ocdsindex_{language_code}"
 
         if not es.indices.exists(index):
@@ -84,6 +84,7 @@ def index(filename, host):
                         "properties": {
                             "title": {"type": "text", "analyzer": language},
                             "text": {"type": "text", "analyzer": language},
+                            "created_at": {"type": "date"},
                             "base_url": {"type": "keyword"},
                         },
                     },
@@ -100,6 +101,7 @@ def index(filename, host):
         body = []
         for document in documents:
             document["base_url"] = data["base_url"]
+            document["created_at"] = data["created_at"]
             body.append({"index": {"_index": index, "_id": document["url"]}})
             body.append(document)
         es.bulk(body)

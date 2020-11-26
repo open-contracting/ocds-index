@@ -27,6 +27,7 @@ The output looks like:
 
    {
      "base_url": "https://standard.open-contracting.org/staging/1.1-dev/",
+     "created_at": 1577880000,
      "documents": {
        "en": [
          {
@@ -75,7 +76,7 @@ Adds documents to Elasticsearch indices.
    ocdsindex index FILENAME HOST
 
 -  ``FILENAME``: the file containing the output of the ``sphinx`` or ``extension-explorer`` command
--  ``HOST``: the connection URI, e.g. ``https://user:pass@host:9200/``
+-  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200/``
 
 Example:
 
