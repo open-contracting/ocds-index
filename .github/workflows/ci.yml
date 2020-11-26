@@ -6,6 +6,15 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
+    services:
+      image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+        options: >-
+          --health-cmd "curl localhost:9200/_cluster/health"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 9200/tcp
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
@@ -22,6 +31,8 @@ jobs:
           ${{ runner.os }}-pip-
     - run: pip install .[test]
     - run: pytest -vv --cov ocdsindex
+      env:
+        ELASTICSEARCH_URL: "localhost:9200"
     - env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: coveralls
