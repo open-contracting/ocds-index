@@ -3,8 +3,8 @@ import os
 import traceback
 from contextlib import contextmanager
 
-from elasticsearch import Elasticsearch
 from click.testing import CliRunner
+from elasticsearch import Elasticsearch
 
 from ocdsindex.cli.__main__ import main
 
