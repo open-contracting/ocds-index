@@ -1,6 +1,7 @@
 import json
 import os.path
 import time
+import traceback
 
 import pytest
 from click.testing import CliRunner
