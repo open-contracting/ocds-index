@@ -50,19 +50,15 @@ Prints the URL and the documents to index from the Extension Explorer as JSON.
 
 .. code-block:: bash
 
-   ocdsindex extension-explorer DIRECTORY
+   ocdsindex extension-explorer FILE
 
--  ``DIRECTORY``: the directory to crawl, containing language directories and HTML files
+-  ``FILE``: the Extension Explorer's `extensions.json <https://github.com/open-contracting/extension-explorer#get-extensions-data>`__ file
 
 Example:
 
 .. code-block:: bash
 
-   ocdsindex extension-explorer path/to/extension_explorer/build/ path/to/extension_explorer/data/extensions.json > data.json
-
-.. note::
-
-   ``base_url`` is hardcoded to ``https://extensions.open-contracting.org``.
+   ocdsindex extension-explorer path/to/extension_explorer/data/extensions.json > data.json
 
 .. _index:
 

@@ -9,11 +9,6 @@ from ocdsindex.crawler import Crawler
 from ocdsindex.extract import extract_extension_explorer, extract_sphinx
 
 
-def _dump(directory, base_url, extract, **kwargs):
-    documents = Crawler(directory, base_url, extract, **kwargs).get_documents_by_language()
-    json.dump({"base_url": base_url, "created_at": int(time.time()), "documents": documents}, sys.stdout)
-
-
 @click.group()
 def main():
     pass
@@ -27,18 +22,18 @@ def sphinx(directory, base_url):
     Crawls the DIRECTORY of the Sphinx build of the OCDS documentation, generates documents to index, assigns documents
     unique URLs from the BASE_URL, and prints the base URL, timestamp, and documents as JSON.
     """
-    _dump(directory, base_url, extract_sphinx)
+    documents = Crawler(directory, base_url, extract_sphinx).get_documents_by_language()
+    json.dump({"base_url": base_url, "created_at": int(time.time()), "documents": documents}, sys.stdout)
 
 
 @click.command()
-@click.argument("directory", type=click.Path(exists=True, file_okay=False))
-def extension_explorer(directory):
+@click.argument("file", type=click.File())
+def extension_explorer(file):
     """
-    Crawls the DIRECTORY containing the Extension Explorer's built documentation, generates documents to index, assigns
-    documents unique URLs, and prints the base URL, timestamp, and documents as JSON.
+    Crawls the Extension Explorer's `extensions.json` file, generates documents to index, assigns documents unique
+    URLs, and prints the base URL, timestamp, and documents as JSON.
     """
     base_url = "https://extensions.open-contracting.org"
-    _dump(directory, base_url, extract_extension_explorer)
 
 
 @click.command()

@@ -1,6 +1,5 @@
 """
-``extract_`` methods that accept a file's remote URL and its root HTML element, and return the documents to index as a
-list of dicts. Each dict sets these keys:
+``extract_`` methods that return the documents to index as a list of dicts. Each dict sets these keys:
 
 url
   The remote URL of the document, which might include a fragment identifier
@@ -69,10 +68,4 @@ def extract_sphinx(url, tree):
 
 
 def extract_extension_explorer(url, tree):
-    """
-    :param str url: the file's remote URL
-    :param tree: the file's root HTML element
-    :returns: a list of dicts representing the documents to index
-    :rtype: list
-    """
     pass
