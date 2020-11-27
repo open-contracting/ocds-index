@@ -40,12 +40,12 @@ The HTML files are uploaded to a web server, and served as a static website like
 2. Crawl
 ~~~~~~~~
 
-Once the HTML files are built, this tool crawls the files and extracts the documents to index. This work is performed by the :ref:`sphinx` or :ref:`extension-explorer` command, producing a JSON file for the next step.
+Once the HTML files are built, the :ref:`sphinx` or :ref:`extension-explorer` command crawls the files and extracts the documents to index, producing a JSON file for the next step.
 
 An HTML file can contain one or more documents. Heading elements, like ``<h1>``, typically mark the start of a new document. A document follows this format:
 
 url
-  The remote URL of the document, which might include a fragment identifier. The tool is provided the base URL of the website whose files are crawled, so that the tool can construct the remote URL of document. For example, a base URL of:
+  The remote URL of the document, which might include a fragment identifier. The command is provided the base URL of the website whose files are crawled, so that it can construct the remote URL of document. For example, a base URL of:
 
   .. code-block:: none
 
@@ -65,20 +65,18 @@ text
 3. Index
 ~~~~~~~~
 
-This tool then adds the extracted documents to Elasticsearch indices. This work is performed by the :ref:`index` command.
+The :ref:`index` command then adds the extracted documents to Elasticsearch indices.
 
-The tool creates a single index for all documents in a given language: for example, ``ocdsindex_es``. As such, an interface can search across all websites in a given language.
+The command creates a single index for all documents in a given language: for example, ``ocdsindex_es``. As such, an interface can search across all websites in a given language.
 
 It adds three fields to each indexed document:
 
 _id
   Same as ``url``.
 base_url
-  The base URL of the website whose files were crawled.
+  The base URL of the website whose files were crawled. An interface can filter on the ``base_url`` field to limit results to specific websites.
 created_at
-  The timestamp at which the files were crawled.
-
-As such, an interface can filter on ``base_url`` to limit results to specific websites, and the tool can filter on ``created_at`` to delete documents that are no longer needed.
+  The timestamp at which the files were crawled. The :ref:`expire` command filters on the ``created_at`` field to delete documents that are no longer needed.
 
 That's it! Feel free to browse the documentation below.
 

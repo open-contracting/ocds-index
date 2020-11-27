@@ -80,6 +80,8 @@ Example:
 
    ocdsindex index data.json https://user:pass@host:9200/
 
+.. _expire:
+
 expire
 ------
 

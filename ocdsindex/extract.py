@@ -33,6 +33,8 @@ def _extract_sphinx_section(section):
 
 def extract_sphinx(url, tree):
     """
+    Extracts one document per section of the page.
+
     :param str url: the file's remote URL
     :param tree: the file's root HTML element
     :returns: a list of dicts representing the documents to index
