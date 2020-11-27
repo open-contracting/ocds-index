@@ -6,7 +6,7 @@ import click
 import elasticsearch
 
 from ocdsindex.crawler import Crawler
-from ocdsindex.extract import extract_extension_explorer, extract_sphinx
+from ocdsindex.extract import extract_sphinx
 
 
 @click.group()
@@ -33,7 +33,7 @@ def extension_explorer(file):
     Crawls the Extension Explorer's `extensions.json` file, generates documents to index, assigns documents unique
     URLs, and prints the base URL, timestamp, and documents as JSON.
     """
-    base_url = "https://extensions.open-contracting.org"
+    "https://extensions.open-contracting.org"
 
 
 @click.command()
