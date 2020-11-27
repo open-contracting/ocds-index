@@ -6,3 +6,4 @@ API Reference
 
    api/crawler
    api/extract
+   api/allow
