@@ -12,4 +12,4 @@ def allow_sphinx(root, file):
     :returns: whether to crawl the file
     :rtype: bool
     """
-    return os.path.split(root)[1] not in ('404', 'privacy-notice')
+    return os.path.split(root)[1] not in ("404", "privacy-notice")
