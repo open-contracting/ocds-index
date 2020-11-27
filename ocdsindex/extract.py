@@ -24,7 +24,7 @@ def _extract_sphinx_section(section):
         else:
             text = node.text_content()
 
-        # Normalize whitespace.
+        # Normalize whitespace within a single line.
         lines.extend([" ".join(line.split()) for line in text.splitlines()])
 
     # Compact newlines.
