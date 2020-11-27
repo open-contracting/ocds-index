@@ -71,14 +71,14 @@ Adds documents to Elasticsearch indices.
 
    ocdsindex index HOST FILE
 
--  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200/``
+-  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200``
 -  ``FILE``: the file containing the output of the ``sphinx`` or ``extension-explorer`` command
 
 Example:
 
 .. code-block:: bash
 
-   ocdsindex index https://user:pass@host:9200/ data.json
+   ocdsindex index https://user:pass@host:9200 data.json
 
 .. _copy:
 
@@ -91,7 +91,7 @@ Adds a document with a DESTINATION base URL for each document with a SOURCE base
 
    ocdsindex copy HOST SOURCE DESTINATION
 
--  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200/``
+-  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200``
 -  ``SOURCE``: the base URL of the documents to copy
 -  ``DESTINATION``: the base URL of the documents to create
 
@@ -99,7 +99,7 @@ Example:
 
 .. code-block:: bash
 
-   ocdsindex copy https://user:pass@host:9200/ https://standard.open-contracting.org/staging/latest/ https://standard.open-contracting.org/latest/
+   ocdsindex copy https://user:pass@host:9200 https://standard.open-contracting.org/staging/latest/ https://standard.open-contracting.org/latest/
 
 .. _expire:
 
@@ -112,14 +112,14 @@ Deletes documents from Elasticsearch indices that were crawled more than 180 day
 
    ocdsindex expire HOST --exclude-file FILENAME
 
--  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200/``
+-  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200``
 -  ``--exclude-file FILENAME``: exclude any document whose base URL is equal to a line in this file
 
 Example:
 
 .. code-block:: bash
 
-   ocdsindex expire https://user:pass@host:9200/ --exclude-file exclude.txt
+   ocdsindex expire https://user:pass@host:9200 --exclude-file exclude.txt
 
 Where ``exclude.txt`` contains:
 
