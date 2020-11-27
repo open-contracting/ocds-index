@@ -3,12 +3,6 @@ OCDS Index |release|
 
 .. include:: ../README.rst
 
-To install:
-
-.. code-block:: bash
-
-   pip install ocdsindex
-
 How it works
 ------------
 
