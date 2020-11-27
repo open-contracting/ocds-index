@@ -17,7 +17,7 @@ jobs:
         env:
           discovery.type: single-node
         ports:
-          - 9200:9200
+          - 9200/tcp
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
@@ -35,7 +35,7 @@ jobs:
     - run: pip install .[test]
     - run: pytest -vv --cov ocdsindex
       env:
-        ELASTICSEARCH_URL: "localhost:9200"
+        ELASTICSEARCH_URL: localhost:${{ job.services.elasticsearch.ports[9200] }}
     - env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: coveralls
