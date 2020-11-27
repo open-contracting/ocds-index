@@ -106,5 +106,5 @@ Where ``excluded.txt`` contains:
 
 .. code-block:: none
 
-   https://standard.open-contracting.org/1.0/
+   https://standard.open-contracting.org/latest/
    https://standard.open-contracting.org/1.1/
