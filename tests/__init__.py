@@ -1,6 +1,8 @@
 import os.path
+from contextlib import contextmanager
 
 import lxml.html
+from elasticsearch import Elasticsearch
 
 expected = {
     "en": [
@@ -60,3 +62,13 @@ expected = {
 def parse(*parts):
     with open(os.path.join("tests", "fixtures", *parts)) as f:
         return lxml.html.fromstring(f.read())
+
+
+@contextmanager
+def elasticsearch(host):
+    try:
+        es = Elasticsearch([host])
+        yield es
+    finally:
+        es.indices.delete(index="ocdsindex_en", ignore=[404])
+        es.indices.delete(index="ocdsindex_es", ignore=[404])

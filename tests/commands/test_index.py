@@ -1,22 +1,11 @@
 import json
 import os
 import traceback
-from contextlib import contextmanager
 
 from click.testing import CliRunner
-from elasticsearch import Elasticsearch
 
 from ocdsindex.cli.__main__ import main
-
-
-@contextmanager
-def elasticsearch(host):
-    try:
-        es = Elasticsearch([host])
-        yield es
-    finally:
-        es.indices.delete(index="ocdsindex_en", ignore=[404])
-        es.indices.delete(index="ocdsindex_es", ignore=[404])
+from tests import elasticsearch
 
 
 def search(es):
