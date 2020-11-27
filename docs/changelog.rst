@@ -1,10 +1,23 @@
 Changelog
 =========
 
+0.0.3 (2020-11-27)
+------------------
+
+Added
+~~~~~
+
+-  :ref:`copy`: New command
+
+Changed
+~~~~~~~
+
+-  :ref:`index`: ``HOST`` is the first argument, and ``FILE`` is the second argument.
+
 0.0.2 (2020-11-27)
 ------------------
 
-Fixes
+Fixed
 ~~~~~
 
 -  Fix link to ReadTheDocs website.

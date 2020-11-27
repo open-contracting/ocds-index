@@ -38,8 +38,8 @@ def extension_explorer(file):
 
 
 @click.command()
-@click.argument("file", type=click.File())
 @click.argument("host")
+@click.argument("file", type=click.File())
 def index(file, host):
     """
     Adds documents to Elasticsearch indices.
@@ -62,6 +62,8 @@ def index(file, host):
     data = json.load(file)
 
     es = elasticsearch.Elasticsearch([host])
+
+    body = []
 
     for language_code, documents in data["documents"].items():
         index = f"ocdsindex_{language_code}"
@@ -87,19 +89,44 @@ def index(file, host):
             )
 
         # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete-by-query.html
-        es.delete_by_query(
-            index=index,
-            body={"query": {"term": {"base_url": data["base_url"]}}},
-        )
+        es.delete_by_query(index=index, body={"query": {"term": {"base_url": data["base_url"]}}})
 
         # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-bulk.html
-        body = []
         for document in documents:
             document["base_url"] = data["base_url"]
             document["created_at"] = data["created_at"]
+
             body.append({"index": {"_index": index, "_id": document["url"]}})
             body.append(document)
-        es.bulk(body)
+
+    es.bulk(body)
+
+
+@click.command()
+@click.argument("host")
+@click.argument("source")
+@click.argument("destination")
+def copy(host, source, destination):
+    """
+    Adds a document with a DESTINATION base URL for each document with a SOURCE base URL.
+    """
+    es = elasticsearch.Elasticsearch([host])
+
+    body = []
+
+    for result in es.cat.indices(format="json"):
+        index = result["index"]
+        result = es.search(index=index, size=10000, body={"query": {"term": {"base_url": source}}})
+        for hit in result["hits"]["hits"]:
+            document = hit["_source"]
+            for field in ("url", "base_url"):
+                document[field] = document[field].replace(source, destination)
+
+            body.append({"index": {"_index": index, "_id": document["url"]}})
+            body.append(document)
+
+    # raise Exception(repr(body))
+    es.bulk(body)
 
 
 @click.command()
@@ -141,6 +168,7 @@ def expire(host, exclude_file):
 main.add_command(sphinx)
 main.add_command(extension_explorer)
 main.add_command(index)
+main.add_command(copy)
 main.add_command(expire)
 
 if __name__ == "__main__":

@@ -6,7 +6,6 @@ import traceback
 from click.testing import CliRunner
 
 from ocdsindex.cli.__main__ import main
-
 from tests import elasticsearch, search
 
 
@@ -32,7 +31,7 @@ def test_expire(tmpdir):
                     document["url"] = f"{base_url}{document['url'][42:]}"
 
             filename.write(json.dumps(data))
-            result = runner.invoke(main, ["index", str(filename), host])
+            result = runner.invoke(main, ["index", host, str(filename)])
 
             assert result.exit_code == 0, traceback.print_exception(*result.exc_info)
             assert result.output == ""

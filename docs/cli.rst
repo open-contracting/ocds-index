@@ -69,16 +69,37 @@ Adds documents to Elasticsearch indices.
 
 .. code-block:: bash
 
-   ocdsindex index FILE HOST
+   ocdsindex index HOST FILE
 
--  ``FILE``: the file containing the output of the ``sphinx`` or ``extension-explorer`` command
 -  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200/``
+-  ``FILE``: the file containing the output of the ``sphinx`` or ``extension-explorer`` command
 
 Example:
 
 .. code-block:: bash
 
-   ocdsindex index data.json https://user:pass@host:9200/
+   ocdsindex index https://user:pass@host:9200/ data.json
+
+.. _copy:
+
+copy
+----
+
+Adds a document with a DESTINATION base URL for each document with a SOURCE base URL.
+
+.. code-block:: bash
+
+   ocdsindex copy HOST SOURCE DESTINATION
+
+-  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200/``
+-  ``SOURCE``: the base URL of the documents to copy
+-  ``DESTINATION``: the base URL of the documents to create
+
+Example:
+
+.. code-block:: bash
+
+   ocdsindex copy https://user:pass@host:9200/ https://standard.open-contracting.org/staging/latest/ https://standard.open-contracting.org/latest/
 
 .. _expire:
 

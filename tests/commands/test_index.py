@@ -19,7 +19,7 @@ def test_index(tmpdir):
 
     with elasticsearch(host) as es:
         filename.write(json.dumps(data))
-        result = runner.invoke(main, ["index", str(filename), host])
+        result = runner.invoke(main, ["index", host, str(filename)])
 
         assert result.exit_code == 0, traceback.print_exception(*result.exc_info)
         assert result.output == ""
@@ -85,7 +85,7 @@ def test_index(tmpdir):
         data["documents"].pop("es")
 
         filename.write(json.dumps(data))
-        result = runner.invoke(main, ["index", str(filename), host])
+        result = runner.invoke(main, ["index", host, str(filename)])
 
         assert result.exit_code == 0, traceback.print_exception(*result.exc_info)
         assert result.output == ""
