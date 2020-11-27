@@ -7,7 +7,7 @@ Changelog
 Fixes
 ~~~~~
 
-- Fix link to ReadTheDocs website.
+-  Fix link to ReadTheDocs website.
 
 0.0.1 (2020-11-27)
 ------------------
