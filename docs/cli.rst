@@ -98,7 +98,7 @@ Example:
 
    ocdsindex expire https://user:pass@host:9200/ --exclude-file exclude.txt
 
-Where ``excluded.txt`` contains:
+Where ``exclude.txt`` contains:
 
 .. code-block:: none
 

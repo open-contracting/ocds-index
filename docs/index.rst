@@ -9,14 +9,6 @@ To install:
 
    pip install ocdsindex
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents
-
-   cli
-   library
-   changelog
-
 How it works
 ------------
 
@@ -87,5 +79,15 @@ created_at
   The timestamp at which the files were crawled.
 
 As such, an interface can filter on ``base_url`` to limit results to specific websites, and the tool can filter on ``created_at`` to delete documents that are no longer needed.
+
+That's it! Feel free to browse the documentation below.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents
+
+   cli
+   library
+   changelog
 
 Copyright (c) 2020 Open Contracting Partnership, released under the BSD license
