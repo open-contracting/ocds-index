@@ -73,9 +73,9 @@ Adds documents to Elasticsearch indices.
 
 .. code-block:: bash
 
-   ocdsindex index FILENAME HOST
+   ocdsindex index FILE HOST
 
--  ``FILENAME``: the file containing the output of the ``sphinx`` or ``extension-explorer`` command
+-  ``FILE``: the file containing the output of the ``sphinx`` or ``extension-explorer`` command
 -  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200/``
 
 Example:
@@ -83,3 +83,28 @@ Example:
 .. code-block:: bash
 
    ocdsindex index data.json https://user:pass@host:9200/
+
+expire
+------
+
+Deletes documents from Elasticsearch indices that were crawled more than 180 days ago.
+
+.. code-block:: bash
+
+   ocdsindex expire HOST --exclude-file FILENAME
+
+-  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200/``
+-  ``--exclude-file FILENAME``: exclude any document whose base URL is equal to a line in this file
+
+Example:
+
+.. code-block:: bash
+
+   ocdsindex expire https://user:pass@host:9200/ --exclude-file exclude.txt
+
+Where ``excluded.txt`` contains:
+
+.. code-block:: none
+
+   https://standard.open-contracting.org/1.0/
+   https://standard.open-contracting.org/1.1/

@@ -5,25 +5,17 @@ import traceback
 from click.testing import CliRunner
 
 from ocdsindex.cli.__main__ import main
-from tests import elasticsearch
-
-
-def search(es):
-    # Force refresh.
-    es.indices.refresh("ocdsindex_en")
-    es.indices.refresh("ocdsindex_es")
-
-    return es.search(index="ocdsindex_en")["hits"], es.search(index="ocdsindex_es")["hits"]
+from tests import elasticsearch, search
 
 
 def test_index(tmpdir):
+    host = os.getenv("ELASTICSEARCH_URL", "localhost:9200")
+
     runner = CliRunner()
 
     filename = tmpdir.join("data.json")
     with open(os.path.join("tests", "fixtures", "data.json")) as f:
         data = json.load(f)
-
-    host = os.getenv("ELASTICSEARCH_URL", "localhost:9200")
 
     with elasticsearch(host) as es:
         filename.write(json.dumps(data))
@@ -54,7 +46,8 @@ def test_index(tmpdir):
             }
         }
 
-        hits_en, hits_es = search(es)
+        hits_en = search(es, "ocdsindex_en")
+        hits_es = search(es, "ocdsindex_es")
 
         assert hits_en["total"]["value"] == 8
         assert hits_es["total"]["value"] == 1
@@ -97,7 +90,8 @@ def test_index(tmpdir):
         assert result.exit_code == 0, traceback.print_exception(*result.exc_info)
         assert result.output == ""
 
-        hits_en, hits_es = search(es)
+        hits_en = search(es, "ocdsindex_en")
+        hits_es = search(es, "ocdsindex_es")
 
         assert hits_en["total"]["value"] == 1
         assert hits_es["total"]["value"] == 1

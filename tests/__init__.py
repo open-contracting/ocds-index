@@ -72,3 +72,9 @@ def elasticsearch(host):
     finally:
         es.indices.delete(index="ocdsindex_en", ignore=[404])
         es.indices.delete(index="ocdsindex_es", ignore=[404])
+
+
+def search(es, index):
+    es.indices.refresh(index)
+
+    return es.search(index=index)["hits"]

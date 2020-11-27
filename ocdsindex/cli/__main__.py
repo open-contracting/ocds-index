@@ -106,9 +106,46 @@ def index(file, host):
         es.bulk(body)
 
 
+@click.command()
+@click.argument("host")
+@click.option(
+    "--exclude-file", type=click.File(), help="exclude any document whose base URL is equal to a line in this file"
+)
+def expire(host, exclude_file):
+    """
+    Deletes documents from Elasticsearch indices that were crawled more than 180 days ago.
+    """
+    threshold = int(time.time()) - 15552000  # 180 days
+
+    if exclude_file:
+        base_urls = [line.strip() for line in exclude_file]
+    else:
+        base_urls = []
+
+    es = elasticsearch.Elasticsearch([host])
+
+    for result in es.cat.indices(format="json"):
+        es.delete_by_query(
+            index=result["index"],
+            body={
+                "query": {
+                    "bool": {
+                        "must": {
+                            "range": {"created_at": {"lt": threshold}},
+                        },
+                        "must_not": {
+                            "terms": {"base_url": base_urls},
+                        },
+                    }
+                }
+            },
+        )
+
+
 main.add_command(sphinx)
 main.add_command(extension_explorer)
 main.add_command(index)
+main.add_command(expire)
 
 if __name__ == "__main__":
     main()
