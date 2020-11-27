@@ -5,6 +5,7 @@ import time
 import click
 import elasticsearch
 
+from ocdsindex.allow import allow_sphinx
 from ocdsindex.crawler import Crawler
 from ocdsindex.extract import extract_sphinx
 
@@ -22,7 +23,7 @@ def sphinx(directory, base_url):
     Crawls the DIRECTORY of the Sphinx build of the OCDS documentation, generates documents to index, assigns documents
     unique URLs from the BASE_URL, and prints the base URL, timestamp, and documents as JSON.
     """
-    documents = Crawler(directory, base_url, extract_sphinx).get_documents_by_language()
+    documents = Crawler(directory, base_url, extract_sphinx, allow=allow_sphinx).get_documents_by_language()
     json.dump({"base_url": base_url, "created_at": int(time.time()), "documents": documents}, sys.stdout)
 
 
