@@ -9,7 +9,7 @@ from ocdsindex.crawler import Crawler
 from ocdsindex.extract import extract_extension_explorer, extract_sphinx
 
 
-def dump(directory, base_url, extract, **kwargs):
+def _dump(directory, base_url, extract, **kwargs):
     documents = Crawler(directory, base_url, extract, **kwargs).get_documents_by_language()
     json.dump({"base_url": base_url, "created_at": int(time.time()), "documents": documents}, sys.stdout)
 
@@ -20,31 +20,31 @@ def main():
 
 
 @click.command()
-@click.argument("directory")
+@click.argument("directory", type=click.Path(exists=True, file_okay=False))
 @click.argument("base-url")
 def sphinx(directory, base_url):
     """
     Crawls the DIRECTORY of the Sphinx build of the OCDS documentation, generates documents to index, assigns documents
-    unique URLs from the BASE_URL, and prints the base URL and documents as JSON.
+    unique URLs from the BASE_URL, and prints the base URL, timestamp, and documents as JSON.
     """
-    dump(directory, base_url, extract_sphinx)
+    _dump(directory, base_url, extract_sphinx)
 
 
 @click.command()
-@click.argument("directory")
+@click.argument("directory", type=click.Path(exists=True, file_okay=False))
 def extension_explorer(directory):
     """
     Crawls the DIRECTORY containing the Extension Explorer's built documentation, generates documents to index, assigns
-    documents unique URLs, and prints the base URL and documents as JSON.
+    documents unique URLs, and prints the base URL, timestamp, and documents as JSON.
     """
     base_url = "https://extensions.open-contracting.org"
-    dump(directory, base_url, extract_extension_explorer)
+    _dump(directory, base_url, extract_extension_explorer)
 
 
 @click.command()
-@click.argument("filename")
+@click.argument("file", type=click.File())
 @click.argument("host")
-def index(filename, host):
+def index(file, host):
     """
     Adds documents to Elasticsearch indices.
 
@@ -63,8 +63,7 @@ def index(filename, host):
         "it": "italian",
     }
 
-    with click.open_file(filename) as f:
-        data = json.load(f)
+    data = json.load(file)
 
     es = elasticsearch.Elasticsearch([host])
 
