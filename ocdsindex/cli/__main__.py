@@ -17,7 +17,7 @@ def connect(host):
 
     credentials = netrc().authenticators(urlparse(host).hostname)
     if credentials:
-        kwargs = {'http_auth': (credentials[0], credentials[2])}
+        kwargs = {"http_auth": (credentials[0], credentials[2])}
 
     return elasticsearch.Elasticsearch([host], **kwargs)
 
