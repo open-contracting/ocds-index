@@ -1,6 +1,8 @@
 import json
 import sys
 import time
+from netrc import netrc
+from urllib.parse import urlparse
 
 import click
 import elasticsearch
@@ -8,6 +10,16 @@ import elasticsearch
 from ocdsindex.allow import allow_sphinx
 from ocdsindex.crawler import Crawler
 from ocdsindex.extract import extract_sphinx
+
+
+def connect(host):
+    kwargs = {}
+
+    credentials = netrc().authenticators(urlparse(host).hostname)
+    if credentials:
+        kwargs = {'http_auth': (credentials[0], credentials[2])}
+
+    return elasticsearch.Elasticsearch([host], **kwargs)
 
 
 @click.group()
@@ -61,7 +73,7 @@ def index(file, host):
 
     data = json.load(file)
 
-    es = elasticsearch.Elasticsearch([host])
+    es = connect(host)
 
     body = []
 
@@ -110,7 +122,7 @@ def copy(host, source, destination):
     """
     Adds a document with a DESTINATION base URL for each document with a SOURCE base URL.
     """
-    es = elasticsearch.Elasticsearch([host])
+    es = connect(host)
 
     body = []
 
@@ -145,7 +157,7 @@ def expire(host, exclude_file):
     else:
         base_urls = []
 
-    es = elasticsearch.Elasticsearch([host])
+    es = connect(host)
 
     for result in es.cat.indices(format="json"):
         es.delete_by_query(

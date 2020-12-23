@@ -1,6 +1,8 @@
 Command-Line Interface
 ======================
 
+The netrc file is supported by commands that interact with Elasticsearch.
+
 .. _sphinx:
 
 sphinx

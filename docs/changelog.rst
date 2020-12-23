@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.0.4 (2020-12-23)
+------------------
+
+Changed
+~~~~~~~
+
+-  :ref:`index`, :ref:`copy`, :ref:`expire`: Added netrc file support
+
 0.0.3 (2020-11-27)
 ------------------
 
