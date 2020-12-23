@@ -15,9 +15,12 @@ from ocdsindex.extract import extract_sphinx
 def connect(host):
     kwargs = {}
 
-    credentials = netrc().authenticators(urlparse(host).hostname)
-    if credentials:
-        kwargs = {"http_auth": (credentials[0], credentials[2])}
+    try:
+        credentials = netrc().authenticators(urlparse(host).hostname)
+        if credentials:
+            kwargs = {"http_auth": (credentials[0], credentials[2])}
+    except FileNotFoundError:
+        pass
 
     return elasticsearch.Elasticsearch([host], **kwargs)
 

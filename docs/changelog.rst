@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.0.4 (2020-12-23)
+------------------
+
+Fixed
+~~~~~
+
+-  :ref:`index`, :ref:`copy`, :ref:`expire`: Make netrc file optional.
+
 0.0.3 (2020-12-23)
 ------------------
 
@@ -13,7 +21,7 @@ Changed
 ~~~~~~~
 
 -  :ref:`index`: ``HOST`` is the first argument, and ``FILE`` is the second argument.
--  :ref:`index`, :ref:`copy`, :ref:`expire`: Added netrc file support
+-  :ref:`index`, :ref:`copy`, :ref:`expire`: Added netrc file support.
 
 0.0.2 (2020-11-27)
 ------------------
