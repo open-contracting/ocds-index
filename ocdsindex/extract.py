@@ -9,15 +9,13 @@ text
   The plain text content of the document
 """
 
-import sys
-
 from lxml import etree
 
 
 def _extract_sphinx_section(section):
     lines = []
 
-    for node in section.xpath("node()"):
+    for node in section.xpath("node()[not(self::comment())]"):
         if isinstance(node, str):  # lxml.etree._ElementUnicodeResult
             text = str(node)
         # Index each section separately. Don't index the title as part of the text.
@@ -58,11 +56,7 @@ def extract_sphinx(url, tree):
         if title != section_title:
             title = f"{title} - {section_title}"
 
-        try:
-            text, section_id = _extract_sphinx_section(section)
-        except Exception:
-            print(etree.tostring(section, with_tail=False), file=sys.stderr)
-            raise
+        text, section_id = _extract_sphinx_section(section)
 
         documents.append(
             {

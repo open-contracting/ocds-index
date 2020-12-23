@@ -7,6 +7,7 @@ Changelog
 Fixed
 ~~~~~
 
+-  :ref:`sphinx`: Ignore comment nodes.
 -  :ref:`index`, :ref:`copy`, :ref:`expire`: Make netrc file optional.
 
 0.0.3 (2020-12-23)
