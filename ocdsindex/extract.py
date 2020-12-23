@@ -9,6 +9,8 @@ text
   The plain text content of the document
 """
 
+import sys
+
 from lxml import etree
 
 
@@ -56,7 +58,11 @@ def extract_sphinx(url, tree):
         if title != section_title:
             title = f"{title} - {section_title}"
 
-        text, section_id = _extract_sphinx_section(section)
+        try:
+            text, section_id = _extract_sphinx_section(section)
+        except Exception:
+            print(etree.tostring(section, with_tail=False), file=sys.stderr)
+            raise
 
         documents.append(
             {
