@@ -27,7 +27,7 @@ The repositories for standard documentation, `profiles <https://github.com/open-
    │   │   └── index.html
    …   …
 
-A build is triggered locally, and more commonly as part of continuous integration: for example, as part of a GitHub Actions `workflow <https://github.com/open-contracting/standard_profile_template/blob/main/.github/workflows/ci.yml#L24-L28>`__.
+A build is triggered locally, and more commonly as part of continuous integration: for example, as part of a GitHub Actions `workflow <https://github.com/open-contracting/standard_profile_template/blob/main/.github/workflows/ci.yml>`__.
 
 The HTML files are uploaded to a web server, and served as a static website like the `OCDS documentation <https://standard.open-contracting.org/latest/>`__, which includes a search box.
 
