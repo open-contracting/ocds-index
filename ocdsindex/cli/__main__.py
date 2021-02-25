@@ -30,7 +30,7 @@ def main():
     pass
 
 
-@click.command()
+@main.command()
 @click.argument("directory", type=click.Path(exists=True, file_okay=False))
 @click.argument("base-url")
 def sphinx(directory, base_url):
@@ -42,7 +42,7 @@ def sphinx(directory, base_url):
     json.dump({"base_url": base_url, "created_at": int(time.time()), "documents": documents}, sys.stdout)
 
 
-@click.command()
+@main.command()
 @click.argument("file", type=click.File())
 def extension_explorer(file):
     """
@@ -52,7 +52,7 @@ def extension_explorer(file):
     "https://extensions.open-contracting.org"
 
 
-@click.command()
+@main.command()
 @click.argument("host")
 @click.argument("file", type=click.File())
 def index(file, host):
@@ -117,7 +117,7 @@ def index(file, host):
     es.bulk(body)
 
 
-@click.command()
+@main.command()
 @click.argument("host")
 @click.argument("source")
 @click.argument("destination")
@@ -144,7 +144,7 @@ def copy(host, source, destination):
     es.bulk(body)
 
 
-@click.command()
+@main.command()
 @click.argument("host")
 @click.option(
     "--exclude-file", type=click.File(), help="exclude any document whose base URL is equal to a line in this file"
@@ -179,12 +179,6 @@ def expire(host, exclude_file):
             },
         )
 
-
-main.add_command(sphinx)
-main.add_command(extension_explorer)
-main.add_command(index)
-main.add_command(copy)
-main.add_command(expire)
 
 if __name__ == "__main__":
     main()
