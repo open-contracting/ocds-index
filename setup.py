@@ -5,7 +5,7 @@ with open("README.rst") as f:
 
 setup(
     name="ocdsindex",
-    version="0.0.4",
+    version="0.0.5",
     author="Open Contracting Partnership",
     author_email="data@open-contracting.org",
     url="https://github.com/open-contracting/ocds-index",
@@ -13,6 +13,7 @@ setup(
     license="BSD",
     packages=find_packages(exclude=["tests", "tests.*"]),
     long_description=long_description,
+    long_description_content_type="text/x-rst",
     install_requires=[
         "click",
         "elasticsearch>=7,<8",
