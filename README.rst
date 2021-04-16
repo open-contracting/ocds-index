@@ -8,7 +8,7 @@ To install:
 
    pip install ocdsindex
 
-If you are viewing this on GitHub or PyPi, open the `full documentation <https://ocds-index.readthedocs.io/>`__ for additional details.
+If you are viewing this on GitHub or PyPI, open the `full documentation <https://ocds-index.readthedocs.io/>`__ for additional details.
 
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/ocdsindex.svg
    :target: https://pypi.org/project/ocdsindex/
