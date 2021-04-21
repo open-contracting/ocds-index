@@ -37,7 +37,8 @@ class Crawler:
         """
         documents = defaultdict(list)
 
-        for entry in os.scandir(self.directory):
+        # The entries are sorted to make it easier to manually test whether output has changed.
+        for entry in sorted(os.scandir(self.directory), key=lambda entry: entry.name):
             if not entry.is_dir() or len(entry.name) != 2:  # not an ISO 639-1 language code directory
                 continue
 

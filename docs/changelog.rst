@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.0.6 (2021-04-21)
+------------------
+
+Fixed
+~~~~~
+
+-  :ref:`sphinx`: Match only the ``section`` class, not the ``tocsection`` class.
+
 0.0.5 (2021-04-10)
 ------------------
 

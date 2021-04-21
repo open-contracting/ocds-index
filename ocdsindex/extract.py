@@ -45,7 +45,10 @@ def extract_sphinx(url, tree):
         etree.strip_elements(tree, element)
 
     documents = []
-    for section in tree.xpath("//div[contains(@class, 'section')]"):
+    # XPath 2.0 has `tokenize(@class, '\s+')='section'` to not select "tocsection", but lxml only supports XPath 1.0.
+    # https://lxml.de/xpathxslt.html
+    # https://lxml.de/cssselect.html
+    for section in tree.xpath("//div[@class and contains(concat(' ', normalize-space(@class), ' '), ' section ')]"):
         # Don't index the text content of jsoninclude Sphinx directives.
         if "expandjson" in section.attrib["class"]:
             continue
