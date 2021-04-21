@@ -31,6 +31,10 @@ def _extract_sphinx_section(section):
     return "\n".join(filter(None, lines)), section.attrib["id"]
 
 
+def _select_div_by_class(tree, class_name):
+    return tree.xpath(f"//div[@class and contains(concat(' ', normalize-space(@class), ' '), ' {class_name} ')]")
+
+
 def extract_sphinx(url, tree):
     """
     Extracts one document per section of the page.
@@ -44,12 +48,16 @@ def extract_sphinx(url, tree):
     for element in ("script", "style"):
         etree.strip_elements(tree, element)
 
+    # Don't index the text content of code-block, literalinclude, jsoninclude, etc. directives.
+    for section in _select_div_by_class(tree, "highlight-json"):
+        section.getparent().remove(section)
+
     documents = []
     # XPath 2.0 has `tokenize(@class, '\s+')='section'` to not select "tocsection", but lxml only supports XPath 1.0.
     # https://lxml.de/xpathxslt.html
     # https://lxml.de/cssselect.html
-    for section in tree.xpath("//div[@class and contains(concat(' ', normalize-space(@class), ' '), ' section ')]"):
-        # Don't index the text content of jsoninclude Sphinx directives.
+    for section in _select_div_by_class(tree, "section"):
+        # Skip sections in which the jsoninclude directive is the only content.
         if "expandjson" in section.attrib["class"]:
             continue
 
@@ -61,6 +69,8 @@ def extract_sphinx(url, tree):
 
         text, section_id = _extract_sphinx_section(section)
 
+        # A heading immediately followed by a subheading will not have any text. However, some phrases occur only in
+        # headings ("Merging specification"), so we include them anyway.
         documents.append(
             {
                 "url": f"{url}#{section_id}",

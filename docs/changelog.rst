@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.0.7 (2021-04-21)
+------------------
+
+Changed
+~~~~~~~
+
+-  :ref:`sphinx`: Do not include include JSON text in document text.
+
 0.0.6 (2021-04-21)
 ------------------
 
