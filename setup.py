@@ -21,7 +21,6 @@ setup(
     ],
     extras_require={
         "test": [
-            "black==20.8b1",
             "coveralls",
             "pytest",
             "pytest-cov",
