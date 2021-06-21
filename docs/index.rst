@@ -15,16 +15,16 @@ The repositories for standard documentation, `profiles <https://github.com/open-
 
    build/
    ├── en
-   │   ├── governance
-   │   │   ├── deprecation
-   │   │   │   └── index.html
-   │   │   └── index.html
+   │   ├── governance
+   │   │   ├── deprecation
+   │   │   │   └── index.html
+   │   │   └── index.html
    …   …
    ├── es
-   │   ├── governance
-   │   │   ├── deprecation
-   │   │   │   └── index.html
-   │   │   └── index.html
+   │   ├── governance
+   │   │   ├── deprecation
+   │   │   │   └── index.html
+   │   │   └── index.html
    …   …
 
 A build is triggered locally, and more commonly as part of continuous integration: for example, as part of a GitHub Actions `workflow <https://github.com/open-contracting/standard_profile_template/blob/latest/.github/workflows/ci.yml>`__.
