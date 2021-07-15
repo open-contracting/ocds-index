@@ -21,7 +21,7 @@ jobs:
           - 9200/tcp
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
       # https://github.com/actions/cache/blob/main/examples.md#using-a-script-to-get-cache-location
