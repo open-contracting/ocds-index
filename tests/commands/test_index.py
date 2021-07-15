@@ -82,7 +82,7 @@ def test_index(tmpdir):
         # Re-index
 
         data["documents"]["en"] = [data["documents"]["en"][-1]]
-        data["documents"].pop("es")
+        del data["documents"]["es"]
 
         filename.write(json.dumps(data))
         result = runner.invoke(main, ["index", host, str(filename)])
