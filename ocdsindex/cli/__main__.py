@@ -2,7 +2,7 @@ import json
 import sys
 import time
 from netrc import netrc
-from urllib.parse import urlparse
+from urllib.parse import urlsplit
 
 import click
 import elasticsearch
@@ -16,7 +16,7 @@ def connect(host):
     kwargs = {}
 
     try:
-        credentials = netrc().authenticators(urlparse(host).hostname)
+        credentials = netrc().authenticators(urlsplit(host).hostname)
         if credentials:
             kwargs = {"http_auth": (credentials[0], credentials[2])}
     except FileNotFoundError:
