@@ -75,6 +75,6 @@ def elasticsearch(host):
 
 
 def search(es, index):
-    es.indices.refresh(index)
+    es.indices.refresh(index=index)
 
     return es.search(index=index, size=10000)["hits"]

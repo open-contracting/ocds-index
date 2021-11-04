@@ -24,10 +24,10 @@ def test_index(tmpdir):
         assert result.exit_code == 0, traceback.print_exception(*result.exc_info)
         assert result.output == ""
 
-        assert es.indices.exists("ocdsindex_en")
-        assert es.indices.exists("ocdsindex_es")
+        assert es.indices.exists(index="ocdsindex_en")
+        assert es.indices.exists(index="ocdsindex_es")
 
-        assert es.indices.get("ocdsindex_en")["ocdsindex_en"]["mappings"] == {
+        assert es.indices.get(index="ocdsindex_en")["ocdsindex_en"]["mappings"] == {
             "properties": {
                 "title": {"analyzer": "english", "type": "text"},
                 "text": {"analyzer": "english", "type": "text"},
@@ -36,7 +36,7 @@ def test_index(tmpdir):
                 "url": {"fields": {"keyword": {"ignore_above": 256, "type": "keyword"}}, "type": "text"},
             }
         }
-        assert es.indices.get("ocdsindex_es")["ocdsindex_es"]["mappings"] == {
+        assert es.indices.get(index="ocdsindex_es")["ocdsindex_es"]["mappings"] == {
             "properties": {
                 "title": {"analyzer": "spanish", "type": "text"},
                 "text": {"analyzer": "spanish", "type": "text"},

@@ -19,8 +19,8 @@ def test_copy(tmpdir):
         assert result.exit_code == 0, traceback.print_exception(*result.exc_info)
         assert result.output == ""
 
-        es.indices.refresh("ocdsindex_en")
-        es.indices.refresh("ocdsindex_es")
+        es.indices.refresh(index="ocdsindex_en")
+        es.indices.refresh(index="ocdsindex_es")
 
         source = "https://standard.open-contracting.org/dev/"
         destination = "https://standard.open-contracting.org/copy/"

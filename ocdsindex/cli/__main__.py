@@ -83,13 +83,13 @@ def index(file, host):
     for language_code, documents in data["documents"].items():
         index = f"ocdsindex_{language_code}"
 
-        if not es.indices.exists(index):
+        if not es.indices.exists(index=index):
             # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/analysis-lang-analyzer.html
             language = language_map.get(language_code, "standard")
 
             # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-create-index.html
             es.indices.create(
-                index,
+                index=index,
                 body={
                     # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping.html
                     "mappings": {
@@ -114,7 +114,7 @@ def index(file, host):
             body.append({"index": {"_index": index, "_id": document["url"]}})
             body.append(document)
 
-    es.bulk(body)
+    es.bulk(body=body)
 
 
 @main.command()
@@ -141,7 +141,7 @@ def copy(host, source, destination):
             body.append(document)
 
     # raise Exception(repr(body))
-    es.bulk(body)
+    es.bulk(body=body)
 
 
 @main.command()
