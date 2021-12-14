@@ -36,12 +36,12 @@ The output looks like:
            "url": "https://standard.open-contracting.org/staging/1.1-dev/en/#about",
            "title": "Open Contracting Data Standard: Documentation - About",
            "text": "The Open Contracting Data Standard …"
-         },
-         ...
-       ],
-       ...
+         }
+       ]
      }
    }
+
+with additional keys for each language and additional objects for each document.
 
 .. _extension-explorer:
 
