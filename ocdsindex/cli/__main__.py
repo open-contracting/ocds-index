@@ -90,15 +90,13 @@ def index(file, host):
             # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-create-index.html
             es.indices.create(
                 index=index,
-                body={
-                    # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping.html
-                    "mappings": {
-                        "properties": {
-                            "title": {"type": "text", "analyzer": language},
-                            "text": {"type": "text", "analyzer": language},
-                            "created_at": {"type": "date"},
-                            "base_url": {"type": "keyword"},
-                        },
+                # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping.html
+                mappings={
+                    "properties": {
+                        "title": {"type": "text", "analyzer": language},
+                        "text": {"type": "text", "analyzer": language},
+                        "created_at": {"type": "date"},
+                        "base_url": {"type": "keyword"},
                     },
                 },
             )
@@ -131,7 +129,7 @@ def copy(host, source, destination):
 
     for result in es.cat.indices(format="json"):
         index = result["index"]
-        result = es.search(index=index, size=10000, body={"query": {"term": {"base_url": source}}})
+        result = es.search(index=index, size=10000, query={"term": {"base_url": source}})
         for hit in result["hits"]["hits"]:
             document = hit["_source"]
             for field in ("url", "base_url"):
