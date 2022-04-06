@@ -76,43 +76,42 @@ def index(file, host):
 
     data = json.load(file)
 
-    es = connect(host)
+    with connect(host) as es:
+        body = []
 
-    body = []
+        for language_code, documents in data["documents"].items():
+            index = f"ocdsindex_{language_code}"
 
-    for language_code, documents in data["documents"].items():
-        index = f"ocdsindex_{language_code}"
+            if not es.indices.exists(index=index):
+                # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/analysis-lang-analyzer.html
+                language = language_map.get(language_code, "standard")
 
-        if not es.indices.exists(index=index):
-            # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/analysis-lang-analyzer.html
-            language = language_map.get(language_code, "standard")
-
-            # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-create-index.html
-            es.indices.create(
-                index=index,
-                # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping.html
-                mappings={
-                    "properties": {
-                        "title": {"type": "text", "analyzer": language},
-                        "text": {"type": "text", "analyzer": language},
-                        "created_at": {"type": "date"},
-                        "base_url": {"type": "keyword"},
+                # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-create-index.html
+                es.indices.create(
+                    index=index,
+                    # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping.html
+                    mappings={
+                        "properties": {
+                            "title": {"type": "text", "analyzer": language},
+                            "text": {"type": "text", "analyzer": language},
+                            "created_at": {"type": "date"},
+                            "base_url": {"type": "keyword"},
+                        },
                     },
-                },
-            )
+                )
 
-        # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete-by-query.html
-        es.delete_by_query(index=index, body={"query": {"term": {"base_url": data["base_url"]}}})
+            # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete-by-query.html
+            es.delete_by_query(index=index, body={"query": {"term": {"base_url": data["base_url"]}}})
 
-        # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-bulk.html
-        for document in documents:
-            document["base_url"] = data["base_url"]
-            document["created_at"] = data["created_at"]
+            # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-bulk.html
+            for document in documents:
+                document["base_url"] = data["base_url"]
+                document["created_at"] = data["created_at"]
 
-            body.append({"index": {"_index": index, "_id": document["url"]}})
-            body.append(document)
+                body.append({"index": {"_index": index, "_id": document["url"]}})
+                body.append(document)
 
-    es.bulk(body=body)
+        es.bulk(body=body)
 
 
 @main.command()
@@ -123,23 +122,22 @@ def copy(host, source, destination):
     """
     Adds a document with a DESTINATION base URL for each document with a SOURCE base URL.
     """
-    es = connect(host)
+    with connect(host) as es:
+        body = []
 
-    body = []
+        for result in es.cat.indices(format="json"):
+            index = result["index"]
+            result = es.search(index=index, size=10000, query={"term": {"base_url": source}})
+            for hit in result["hits"]["hits"]:
+                document = hit["_source"]
+                for field in ("url", "base_url"):
+                    document[field] = document[field].replace(source, destination)
 
-    for result in es.cat.indices(format="json"):
-        index = result["index"]
-        result = es.search(index=index, size=10000, query={"term": {"base_url": source}})
-        for hit in result["hits"]["hits"]:
-            document = hit["_source"]
-            for field in ("url", "base_url"):
-                document[field] = document[field].replace(source, destination)
+                body.append({"index": {"_index": index, "_id": document["url"]}})
+                body.append(document)
 
-            body.append({"index": {"_index": index, "_id": document["url"]}})
-            body.append(document)
-
-    # raise Exception(repr(body))
-    es.bulk(body=body)
+        # raise Exception(repr(body))
+        es.bulk(body=body)
 
 
 @main.command()
@@ -158,24 +156,23 @@ def expire(host, exclude_file):
     else:
         base_urls = []
 
-    es = connect(host)
-
-    for result in es.cat.indices(format="json"):
-        es.delete_by_query(
-            index=result["index"],
-            body={
-                "query": {
-                    "bool": {
-                        "must": {
-                            "range": {"created_at": {"lt": threshold}},
-                        },
-                        "must_not": {
-                            "terms": {"base_url": base_urls},
-                        },
+    with connect(host) as es:
+        for result in es.cat.indices(format="json"):
+            es.delete_by_query(
+                index=result["index"],
+                body={
+                    "query": {
+                        "bool": {
+                            "must": {
+                                "range": {"created_at": {"lt": threshold}},
+                            },
+                            "must_not": {
+                                "terms": {"base_url": base_urls},
+                            },
+                        }
                     }
-                }
-            },
-        )
+                },
+            )
 
 
 if __name__ == "__main__":
