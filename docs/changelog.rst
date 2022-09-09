@@ -7,7 +7,7 @@ Changelog
 Changed
 ~~~~~~~
 
--  :ref:`sphinx`: Do not include include JSON text in document text.
+-  :ref:`sphinx`: Do not include JSON text in document text.
 
 0.0.6 (2021-04-21)
 ------------------
