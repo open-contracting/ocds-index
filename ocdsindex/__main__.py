@@ -173,3 +173,7 @@ def expire(host, exclude_file):
                     }
                 },
             )
+
+
+if __name__ == "__main__":
+    main()
