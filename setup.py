@@ -44,7 +44,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "ocdsindex = ocdsindex.cli.__main__:main",
+            "ocdsindex = ocdsindex.__main__:main",
         ],
     },
 )

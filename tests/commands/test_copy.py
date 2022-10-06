@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from click.testing import CliRunner
 
-from ocdsindex.cli.__main__ import main
+from ocdsindex.__main__ import main
 from tests import elasticsearch, search
 
 

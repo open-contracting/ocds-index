@@ -6,7 +6,7 @@ import traceback
 import pytest
 from click.testing import CliRunner
 
-from ocdsindex.cli.__main__ import main
+from ocdsindex.__main__ import main
 from tests import expected
 
 
