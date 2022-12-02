@@ -1,12 +1,14 @@
 Changelog
 =========
 
-Unreleased
-----------
+0.1.0 (2022-12-01)
+------------------
 
 Changed
 ~~~~~~~
 
+-  Add support for Sphinx 4.x and 5.x.
+-  Drop support for Sphinx 3.x.
 -  Drop support for Python 3.6 (end-of-life 2021-12-23).
 
 0.0.7 (2021-04-21)

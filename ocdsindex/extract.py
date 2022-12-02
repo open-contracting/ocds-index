@@ -19,7 +19,7 @@ def _extract_sphinx_section(section):
         if isinstance(node, str):  # lxml.etree._ElementUnicodeResult
             text = str(node)
         # Index each section separately. Don't index the title as part of the text.
-        elif "section" in node.get("class", "") or node.tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
+        elif node.tag in ("section", "h1", "h2", "h3", "h4", "h5", "h6"):
             continue
         else:
             text = node.text_content()
@@ -53,14 +53,7 @@ def extract_sphinx(url, tree):
         section.getparent().remove(section)
 
     documents = []
-    # XPath 2.0 has `tokenize(@class, '\s+')='section'` to not select "tocsection", but lxml only supports XPath 1.0.
-    # https://lxml.de/xpathxslt.html
-    # https://lxml.de/cssselect.html
-    for section in _select_div_by_class(tree, "section"):
-        # Skip sections in which the jsoninclude directive is the only content.
-        if "expandjson" in section.attrib["class"]:
-            continue
-
+    for section in tree.xpath("//section"):
         title = tree.xpath("//title/text()")[0].split("—")[0].strip()
         section_title = section.xpath("h1|h2|h3|h4|h5|h6")[0].text_content().rstrip("¶")
 
