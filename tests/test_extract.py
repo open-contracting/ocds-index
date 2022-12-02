@@ -25,7 +25,7 @@ def test_extract_sphinx_deep():
 
 def test_extract_sphinx_error(caplog):
     with pytest.raises(MissingHeadingError) as excinfo:
-        documents = extract_sphinx(
+        extract_sphinx(
             "https://standard.open-contracting.org/fail/",
             parse("failure", "index.html"),
         )
