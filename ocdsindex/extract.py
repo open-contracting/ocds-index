@@ -9,7 +9,14 @@ text
   The plain text content of the document
 """
 
+import logging
+
+import lxml.html
 from lxml import etree
+
+from ocdsindex.exceptions import MissingHeadingError
+
+logger = logging.getLogger(__name__)
 
 
 def _extract_sphinx_section(section):
@@ -55,7 +62,11 @@ def extract_sphinx(url, tree):
     documents = []
     for section in tree.xpath("//section"):
         title = tree.xpath("//title/text()")[0].split("—")[0].strip()
-        section_title = section.xpath("h1|h2|h3|h4|h5|h6")[0].text_content().rstrip("¶")
+        try:
+            section_title = section.xpath("h1|h2|h3|h4|h5|h6")[0].text_content().rstrip("¶")
+        except IndexError as e:
+            logger.exception(f"No heading found\n{lxml.html.tostring(section).decode()}")
+            raise MissingHeadingError(e)
 
         if title != section_title:
             title = f"{title} - {section_title}"

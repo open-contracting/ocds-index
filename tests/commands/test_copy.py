@@ -14,7 +14,7 @@ def test_copy(tmpdir):
     runner = CliRunner()
 
     with elasticsearch(host) as es:
-        result = runner.invoke(main, ["index", host, os.path.join("tests", "fixtures", "data.json")])
+        result = runner.invoke(main, ["index", host, os.path.join("tests", "fixtures", "success", "data.json")])
 
         assert result.exit_code == 0, traceback.print_exception(*result.exc_info)
         assert result.output == ""

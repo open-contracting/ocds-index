@@ -1,13 +1,25 @@
 Changelog
 =========
 
+0.1.1 (2022-12-01)
+------------------
+
+Added
+~~~~~
+
+-  Log message if section heading not found.
+
 0.1.0 (2022-12-01)
 ------------------
+
+Added
+~~~~~
+
+-  Add support for Sphinx 4.x and 5.x.
 
 Changed
 ~~~~~~~
 
--  Add support for Sphinx 4.x and 5.x.
 -  Drop support for Sphinx 3.x.
 -  Drop support for Python 3.6 (end-of-life 2021-12-23).
 

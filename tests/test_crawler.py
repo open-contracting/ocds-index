@@ -6,7 +6,8 @@ from tests import expected
 
 
 def test_get_documents_by_language():
-    crawler = Crawler(os.path.join("tests", "fixtures"), "https://standard.open-contracting.org/dev/", extract_sphinx)
+    base_url = "https://standard.open-contracting.org/dev/"
+    crawler = Crawler(os.path.join("tests", "fixtures", "success"), base_url, extract_sphinx)
     documents = crawler.get_documents_by_language()
 
     assert set(documents) == set(expected)

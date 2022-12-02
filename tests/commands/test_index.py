@@ -14,7 +14,7 @@ def test_index(tmpdir):
     runner = CliRunner()
 
     filename = tmpdir.join("data.json")
-    with open(os.path.join("tests", "fixtures", "data.json")) as f:
+    with open(os.path.join("tests", "fixtures", "success", "data.json")) as f:
         data = json.load(f)
 
     with elasticsearch(host) as es:
