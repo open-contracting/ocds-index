@@ -9,6 +9,11 @@ Added
 
 -  Log message if section heading not found.
 
+Fixed
+~~~~~
+
+-  Extract only within ``role="main"`` element.
+
 0.1.0 (2022-12-01)
 ------------------
 

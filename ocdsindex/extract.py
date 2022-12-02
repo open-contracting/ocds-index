@@ -60,7 +60,7 @@ def extract_sphinx(url, tree):
         section.getparent().remove(section)
 
     documents = []
-    for section in tree.xpath("//section"):
+    for section in tree.xpath("//*[contains(@role, 'main')]//section"):
         title = tree.xpath("//title/text()")[0].split("—")[0].strip()
         try:
             section_title = section.xpath("h1|h2|h3|h4|h5|h6")[0].text_content().rstrip("¶")
