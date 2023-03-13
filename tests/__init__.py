@@ -2,7 +2,6 @@ import os.path
 from contextlib import contextmanager
 
 import lxml.html
-from elasticsearch import Elasticsearch
 
 from ocdsindex.__main__ import connect
 
