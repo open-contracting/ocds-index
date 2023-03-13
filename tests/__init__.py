@@ -4,6 +4,8 @@ from contextlib import contextmanager
 import lxml.html
 from elasticsearch import Elasticsearch
 
+from ocdsindex.__main__ import connect
+
 expected = {
     "en": [
         {
@@ -66,12 +68,12 @@ def parse(*parts):
 
 @contextmanager
 def elasticsearch(host):
-    es = Elasticsearch([host])
+    es = connect(host)
     try:
         yield es
     finally:
-        es.indices.delete(index="ocdsindex_en", ignore=[404])
-        es.indices.delete(index="ocdsindex_es", ignore=[404])
+        es.indices.delete(index="ocdsindex_en", allow_no_indices=True)
+        es.indices.delete(index="ocdsindex_es", allow_no_indices=True)
         es.close()
 
 

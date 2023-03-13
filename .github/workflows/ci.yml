@@ -20,14 +20,14 @@ jobs:
           sudo apt install libxml2-dev libxslt-dev
       - run: pip install .[test]
       - env:
-          ELASTICSEARCH_URL: localhost:${{ job.services.elasticsearch.ports[9200] }}
+          ELASTICSEARCH_URL: https://localhost:${{ job.services.elasticsearch.ports[9200] }}
         run: pytest -W error --cov ocdsindex
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: coveralls --service=github
     services:
       elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
         env:
           discovery.type: single-node
         options: >-

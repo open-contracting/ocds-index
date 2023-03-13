@@ -9,7 +9,7 @@ from tests import elasticsearch, search
 
 
 def test_copy(tmpdir):
-    host = os.getenv("ELASTICSEARCH_URL", "localhost:9200")
+    host = os.getenv("ELASTICSEARCH_URL", "https://localhost:9200")
 
     runner = CliRunner()
 

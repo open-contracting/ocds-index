@@ -9,7 +9,7 @@ from tests import elasticsearch, search
 
 
 def test_index(tmpdir):
-    host = os.getenv("ELASTICSEARCH_URL", "localhost:9200")
+    host = os.getenv("ELASTICSEARCH_URL", "https://localhost:9200")
 
     runner = CliRunner()
 
@@ -63,7 +63,6 @@ def test_index(tmpdir):
                 "created_at": 1577880000,
                 "url": "https://standard.open-contracting.org/dev/en/#about",
             },
-            "_type": "_doc",
         } in hits_en["hits"]
         assert {
             "_id": "https://standard.open-contracting.org/dev/es/#about",
@@ -76,7 +75,6 @@ def test_index(tmpdir):
                 "created_at": 1577880000,
                 "url": "https://standard.open-contracting.org/dev/es/#about",
             },
-            "_type": "_doc",
         } in hits_es["hits"]
 
         # Re-index

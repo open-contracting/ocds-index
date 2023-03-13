@@ -1,6 +1,22 @@
 Changelog
 =========
 
+0.2.0 (2023-03-13)
+------------------
+
+To run tests locally, set the ``REQUESTS_CA_BUNDLE`` environment variable to e.g. ``path/to/elasticsearch/config/certs/http_ca.crt``, and add the basic authentication credentials to ``$HOME/.netrc``.
+
+Added
+~~~~~
+
+-  Add support for Elasticsearch 8.
+
+Changed
+~~~~~~~
+
+-  The ``ELASTICSEARCH_URL`` environment variable must set a scheme.
+-  Drop support for Elasticsearch 7.
+
 0.1.1 (2022-12-01)
 ------------------
 

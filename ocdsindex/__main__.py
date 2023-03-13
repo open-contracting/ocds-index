@@ -12,17 +12,15 @@ from ocdsindex.crawler import Crawler
 from ocdsindex.extract import extract_sphinx
 
 
-def connect(host):
-    kwargs = {}
-
+def connect(host, **kwargs):
     try:
         credentials = netrc().authenticators(urlsplit(host).hostname)
         if credentials:
-            kwargs = {"http_auth": (credentials[0], credentials[2])}
+            kwargs["basic_auth"] = (credentials[0], credentials[2])
     except FileNotFoundError:
         pass
 
-    return elasticsearch.Elasticsearch([host], **kwargs)
+    return elasticsearch.Elasticsearch([host], node_class="requests", **kwargs)
 
 
 @click.group()
@@ -101,7 +99,7 @@ def index(file, host):
                 )
 
             # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete-by-query.html
-            es.delete_by_query(index=index, body={"query": {"term": {"base_url": data["base_url"]}}})
+            es.delete_by_query(index=index, query={"term": {"base_url": data["base_url"]}})
 
             # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-bulk.html
             for document in documents:
@@ -111,7 +109,7 @@ def index(file, host):
                 body.append({"index": {"_index": index, "_id": document["url"]}})
                 body.append(document)
 
-        es.bulk(body=body)
+        es.bulk(operations=body)
 
 
 @main.command()
@@ -137,7 +135,7 @@ def copy(host, source, destination):
                 body.append(document)
 
         # raise Exception(repr(body))
-        es.bulk(body=body)
+        es.bulk(operations=body)
 
 
 @main.command()
@@ -160,16 +158,14 @@ def expire(host, exclude_file):
         for result in es.cat.indices(format="json"):
             es.delete_by_query(
                 index=result["index"],
-                body={
-                    "query": {
-                        "bool": {
-                            "must": {
-                                "range": {"created_at": {"lt": threshold}},
-                            },
-                            "must_not": {
-                                "terms": {"base_url": base_urls},
-                            },
-                        }
+                query={
+                    "bool": {
+                        "must": {
+                            "range": {"created_at": {"lt": threshold}},
+                        },
+                        "must_not": {
+                            "terms": {"base_url": base_urls},
+                        },
                     }
                 },
             )

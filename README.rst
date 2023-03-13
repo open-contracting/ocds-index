@@ -1,6 +1,6 @@
 |PyPI Version| |Build Status| |Coverage Status| |Python Version|
 
-This Python package provides a command-line tool and library to index OCDS documentation in Elasticsearch 7.x.
+This Python package provides a command-line tool and library to index OCDS documentation in Elasticsearch 8.x.
 
 To install:
 
