@@ -24,7 +24,7 @@ jobs:
           security-enabled: false
       - run: pip install .[test]
       - env:
-          ELASTICSEARCH_URL: https://localhost:9200
+          ELASTICSEARCH_URL: http://localhost:9200
         run: pytest -W error --cov ocdsindex
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
