@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest  # service containers only available on Linux
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9, '3.10', '3.11', pypy-3.9]
+        python-version: [3.7, 3.8, 3.9, '3.10', '3.11']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
@@ -14,10 +14,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
           cache-dependency-path: setup.cfg
-      - if: matrix.python-version == 'pypy-3.9'
-        run: |
-          sudo apt update
-          sudo apt install libxml2-dev libxslt-dev
       - uses: elastic/elastic-github-actions/elasticsearch@master
         with:
           stack-version: 8.6.2
