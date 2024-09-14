@@ -57,7 +57,7 @@ def test_index(tmpdir):
             "_index": "ocdsindex_en",
             "_score": 1.0,
             "_source": {
-                "title": "Open Contracting Data Standard: " "Documentation - About",
+                "title": "Open Contracting Data Standard: Documentation - About",
                 "text": "The Open Contracting Data Standard",
                 "base_url": "https://standard.open-contracting.org/dev/",
                 "created_at": 1577880000,
@@ -69,7 +69,7 @@ def test_index(tmpdir):
             "_index": "ocdsindex_es",
             "_score": 1.0,
             "_source": {
-                "title": "Estándar de Datos de Contrataciones Abiertas: " "Documentación - Acerca de",
+                "title": "Estándar de Datos de Contrataciones Abiertas: Documentación - Acerca de",
                 "text": "El Estándar de Datos de Contratación Abierta",
                 "base_url": "https://standard.open-contracting.org/dev/",
                 "created_at": 1577880000,

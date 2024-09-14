@@ -42,7 +42,7 @@ class Crawler:
             if not entry.is_dir() or len(entry.name) != 2:  # not an ISO 639-1 language code directory
                 continue
 
-            for root, dirs, files in os.walk(entry.path):
+            for root, _, files in os.walk(entry.path):
                 for file in files:
                     if self.allow(root, file):
                         documents[entry.name].extend(self.get_documents_from_file(os.path.join(root, file)))

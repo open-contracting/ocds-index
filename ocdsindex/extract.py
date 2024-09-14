@@ -65,8 +65,8 @@ def extract_sphinx(url, tree):
         try:
             section_title = section.xpath("h1|h2|h3|h4|h5|h6")[0].text_content().rstrip("¶")
         except IndexError as e:
-            logger.exception(f"No heading found\n{lxml.html.tostring(section).decode()}")
-            raise MissingHeadingError(e)
+            logger.exception("No heading found\n%s", lxml.html.tostring(section).decode())
+            raise MissingHeadingError(e) from None
 
         if title != section_title:
             title = f"{title} - {section_title}"

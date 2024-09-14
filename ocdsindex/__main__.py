@@ -134,7 +134,6 @@ def copy(host, source, destination):
                 body.append({"index": {"_index": index, "_id": document["url"]}})
                 body.append(document)
 
-        # raise Exception(repr(body))
         es.bulk(operations=body)
 
 
@@ -149,10 +148,7 @@ def expire(host, exclude_file):
     """
     threshold = int(time.time()) - 15552000  # 180 days
 
-    if exclude_file:
-        base_urls = [line.strip() for line in exclude_file]
-    else:
-        base_urls = []
+    base_urls = [line.strip() for line in exclude_file] if exclude_file else []
 
     with connect(host) as es:
         for result in es.cat.indices(format="json"):
