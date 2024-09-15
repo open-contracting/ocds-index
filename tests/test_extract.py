@@ -30,7 +30,7 @@ def test_extract_sphinx_error(caplog):
             parse("failure", "index.html"),
         )
 
-    assert str(excinfo.value) == "list index out of range"
+    assert str(excinfo.value) == ""
     assert len(caplog.records) == 1
     assert caplog.records[0].levelname == "ERROR"
     assert caplog.records[0].message == 'No heading found\n<section id="error">\n    No heading.\n  </section>\n'
