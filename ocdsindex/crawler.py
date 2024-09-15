@@ -5,14 +5,12 @@ from urllib.parse import urljoin
 import lxml.html
 
 
-def true(root, file):
+def true(_root, _file):
     return True
 
 
 class Crawler:
-    """
-    Crawls a directory for documents to index.
-    """
+    """Crawl a directory for documents to index."""
 
     def __init__(self, directory, base_url, extract, *, allow=true):
         """
@@ -30,7 +28,7 @@ class Crawler:
 
     def get_documents_by_language(self):
         """
-        Returns the documents to index for each language.
+        Return the documents to index for each language.
 
         :returns: a dict in which the key is a language code and the value is the documents to index
         :rtype: dict
@@ -51,7 +49,7 @@ class Crawler:
 
     def get_documents_from_file(self, path):
         """
-        Parses the file's HTML contents, calculates its remote URL, and returns the documents to index from the file.
+        Parse the file's HTML contents, calculate its remote URL, and return the documents to index from the file.
 
         :param str path: a file path
         :returns: the documents to index

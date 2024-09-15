@@ -1,5 +1,7 @@
 """
-``extract_`` methods that return the documents to index as a list of dicts. Each dict sets these keys:
+``extract_`` methods that return the documents to index as a list of dicts.
+
+Each dict sets these keys:
 
 url
   The remote URL of the document, which might include a fragment identifier
@@ -44,7 +46,7 @@ def _select_div_by_class(tree, class_name):
 
 def extract_sphinx(url, tree):
     """
-    Extracts one document per section of the page.
+    Extract one document per section of the page.
 
     :param str url: the file's remote URL
     :param tree: the file's root HTML element

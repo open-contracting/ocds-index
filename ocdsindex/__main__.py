@@ -33,8 +33,8 @@ def main():
 @click.argument("base-url")
 def sphinx(directory, base_url):
     """
-    Crawls the DIRECTORY of the Sphinx build of the OCDS documentation, generates documents to index, assigns documents
-    unique URLs from the BASE_URL, and prints the base URL, timestamp, and documents as JSON.
+    Crawl the DIRECTORY of the Sphinx build of the OCDS documentation, generate documents to index, assign documents
+    unique URLs from the BASE_URL, and print the base URL, timestamp, and documents as JSON.
     """
     documents = Crawler(directory, base_url, extract_sphinx, allow=allow_sphinx).get_documents_by_language()
     json.dump({"base_url": base_url, "created_at": int(time.time()), "documents": documents}, sys.stdout)
@@ -44,8 +44,8 @@ def sphinx(directory, base_url):
 @click.argument("file", type=click.File())
 def extension_explorer(file):
     """
-    Crawls the Extension Explorer's `extensions.json` file, generates documents to index, assigns documents unique
-    URLs, and prints the base URL, timestamp, and documents as JSON.
+    Crawl the Extension Explorer's `extensions.json` file, generate documents to index, assign documents unique
+    URLs, and print the base URL, timestamp, and documents as JSON.
     """
     "https://extensions.open-contracting.org"
 
@@ -55,15 +55,15 @@ def extension_explorer(file):
 @click.argument("file", type=click.File())
 def index(file, host):
     """
-    Adds documents to Elasticsearch indices.
+    Add documents to Elasticsearch indices.
 
-    Reads a JSON file in which the "base_url" key is the remote URL at which the documents will be accessible, and the
+    Read a JSON file in which the "base_url" key is the remote URL at which the documents will be accessible, and the
     "documents" key is an object in which the key is a language code and the value is the documents to index.
 
     The `sphinx` and `extension-explorer` commands create such files.
 
-    Connects to Elasticsearch at HOST and, for each language, creates an `ocdsindex_XX` index, deletes existing
-    documents matching the base URL, and indexes the new documents in that language.
+    Connect to Elasticsearch at HOST and, for each language, create an `ocdsindex_XX` index, delete existing
+    documents matching the base URL, and index the new documents in that language.
     """
     language_map = {
         "en": "english",
@@ -117,9 +117,7 @@ def index(file, host):
 @click.argument("source")
 @click.argument("destination")
 def copy(host, source, destination):
-    """
-    Adds a document with a DESTINATION base URL for each document with a SOURCE base URL.
-    """
+    """Add a document with a DESTINATION base URL for each document with a SOURCE base URL."""
     with connect(host) as es:
         body = []
 
@@ -143,9 +141,7 @@ def copy(host, source, destination):
     "--exclude-file", type=click.File(), help="exclude any document whose base URL is equal to a line in this file"
 )
 def expire(host, exclude_file):
-    """
-    Deletes documents from Elasticsearch indices that were crawled more than 180 days ago.
-    """
+    """Delete documents from Elasticsearch indices that were crawled more than 180 days ago."""
     threshold = int(time.time()) - 15552000  # 180 days
 
     base_urls = [line.strip() for line in exclude_file] if exclude_file else []

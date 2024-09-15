@@ -1,13 +1,11 @@
-"""
-``allow_`` methods that return whether to crawl a file.
-"""
+"""``allow_`` methods that return whether to crawl a file."""
 
 import os
 
 
-def allow_sphinx(root, file):
+def allow_sphinx(root, _file):
     """
-    Allows all files, except the 404 page.
+    Allow all files, except the 404 page.
 
     :param str root: a directory path
     :param str file: a file basename
