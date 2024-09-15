@@ -121,8 +121,8 @@ def copy(host, source, destination):
     with connect(host) as es:
         body = []
 
-        for result in es.cat.indices(format="json"):
-            index = result["index"]
+        for index_result in es.cat.indices(format="json"):
+            index = index_result["index"]
             result = es.search(index=index, size=10000, query={"term": {"base_url": source}})
             for hit in result["hits"]["hits"]:
                 document = hit["_source"]
@@ -147,9 +147,9 @@ def expire(host, exclude_file):
     base_urls = [line.strip() for line in exclude_file] if exclude_file else []
 
     with connect(host) as es:
-        for result in es.cat.indices(format="json"):
+        for index_result in es.cat.indices(format="json"):
             es.delete_by_query(
-                index=result["index"],
+                index=index_result["index"],
                 query={
                     "bool": {
                         "must": {
