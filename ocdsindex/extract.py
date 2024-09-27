@@ -28,7 +28,7 @@ def _extract_sphinx_section(section):
         if isinstance(node, str):  # lxml.etree._ElementUnicodeResult
             text = str(node)
         # Index each section separately. Don't index the title as part of the text.
-        elif node.tag in ("section", "h1", "h2", "h3", "h4", "h5", "h6"):
+        elif node.tag in {"section", "h1", "h2", "h3", "h4", "h5", "h6"}:
             continue
         else:
             text = node.text_content()
