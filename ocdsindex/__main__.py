@@ -123,8 +123,7 @@ def copy(host, source, destination):
 
         for index_result in es.cat.indices(format="json"):
             index = index_result["index"]
-            result = es.search(index=index, size=10000, query={"term": {"base_url": source}})
-            for hit in result["hits"]["hits"]:
+            for hit in es.search(index=index, size=10000, query={"term": {"base_url": source}})["hits"]["hits"]:
                 document = hit["_source"]
                 for field in ("url", "base_url"):
                     document[field] = document[field].replace(source, destination)
