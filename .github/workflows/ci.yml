@@ -14,7 +14,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
           cache-dependency-path: pyproject.toml
-      - uses: elastic/elastic-github-actions/elasticsearch@master
+      - uses: elastic/elastic-github-actions/elasticsearch@dc110609b1cb3024477ead739ca23ab547b8b9ff # master
         with:
           stack-version: 8.6.2
           security-enabled: false
