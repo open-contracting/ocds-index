@@ -15,10 +15,11 @@ from ocdsindex.extract import extract_sphinx
 def connect(host, **kwargs):
     try:
         credentials = netrc().authenticators(urlsplit(host).hostname)
-        if credentials:
-            kwargs["basic_auth"] = (credentials[0], credentials[2])
     except FileNotFoundError:
         pass
+    else:
+        if credentials:
+            kwargs["basic_auth"] = (credentials[0], credentials[2])
 
     return elasticsearch.Elasticsearch([host], node_class="requests", **kwargs)
 
