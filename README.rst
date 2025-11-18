@@ -14,7 +14,7 @@ If you are viewing this on GitHub or PyPI, open the `full documentation <https:/
    :target: https://pypi.org/project/ocdsindex/
 .. |Build Status| image:: https://github.com/open-contracting/ocds-index/actions/workflows/ci.yml/badge.svg
    :target: https://github.com/open-contracting/ocds-index/actions/workflows/ci.yml
-.. |Coverage Status| image:: https://coveralls.io/repos/github/open-contracting/ocds-index/badge.svg?branch=main
-   :target: https://coveralls.io/github/open-contracting/ocds-index?branch=main
+.. |Coverage Status| image:: https://codecov.io/github/open-contracting/ocds-index/graph/badge.svg
+   :target: https://codecov.io/github/open-contracting/ocds-index
 .. |Python Version| image:: https://img.shields.io/pypi/pyversions/ocdsindex.svg
    :target: https://pypi.org/project/ocdsindex/
