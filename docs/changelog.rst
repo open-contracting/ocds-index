@@ -1,16 +1,30 @@
 Changelog
 =========
 
-Unreleased
-----------
+0.3.0 (2026-03-27)
+------------------
 
--  Add support for Python 3.13.
+To run tests locally:
+
+-  Run ``docker run`` with ``-e xpack.security.enabled=false -e discovery.type=single-node -p 9200:9200``
+-  Run ``pytest`` with ``env ELASTICSEARCH_URL=http://localhost:9200``
+
+Also, add the basic authentication credentials to ``$HOME/.netrc``.
+
+Added
+~~~~~
+
+-  Add support for Elasticsearch 9.
+-  Add support for Python 3.13, 3.14.
+
+Removed
+~~~~~~~
+
+-  Drop support for Elasticsearch 8.
 -  Drop support for Python 3.7, 3.8 and 3.9.
 
 0.2.0 (2023-03-13)
 ------------------
-
-To run tests locally, set the ``REQUESTS_CA_BUNDLE`` environment variable to e.g. ``path/to/elasticsearch/config/certs/http_ca.crt``, and add the basic authentication credentials to ``$HOME/.netrc``.
 
 Added
 ~~~~~
@@ -21,6 +35,10 @@ Changed
 ~~~~~~~
 
 -  The ``ELASTICSEARCH_URL`` environment variable must set a scheme.
+
+Removed
+~~~~~~~
+
 -  Drop support for Elasticsearch 7.
 
 0.1.1 (2022-12-01)
@@ -44,7 +62,7 @@ Added
 
 -  Add support for Sphinx 4.x and 5.x.
 
-Changed
+Removed
 ~~~~~~~
 
 -  Drop support for Sphinx 3.x.

@@ -15,7 +15,7 @@ project = "OCDS Index"
 copyright = "2020, Open Contracting Partnership"
 author = "Open Contracting Partnership"
 
-version = "0.2.0"
+version = "0.3.0"
 release = version
 
 # -- General configuration ---------------------------------------------------

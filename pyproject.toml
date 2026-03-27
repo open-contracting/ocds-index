@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ocdsindex"
-version = "0.2.0"
+version = "0.3.0"
 authors = [{name = "Open Contracting Partnership", email = "data@open-contracting.org"}]
 description = "A command-line tool and library to index OCDS documentation in Elasticsearch"
 readme = "README.rst"
@@ -21,7 +21,7 @@ classifiers = [
 ]
 dependencies = [
     "click",
-    "elasticsearch[requests]>=8,<9",
+    "elasticsearch[requests]>=9,<10",
     "lxml",
 ]
 
