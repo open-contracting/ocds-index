@@ -2,6 +2,7 @@ import os.path
 from contextlib import contextmanager
 
 import lxml.html
+from elasticsearch import NotFoundError
 
 from ocdsindex.__main__ import connect
 
@@ -71,8 +72,12 @@ def elasticsearch(host):
     try:
         yield es
     finally:
-        es.indices.delete(index="ocdsindex_en", allow_no_indices=True)
-        es.indices.delete(index="ocdsindex_es", allow_no_indices=True)
+        for alias in ("ocdsindex_en", "ocdsindex_es"):
+            try:
+                for index in es.indices.get_alias(name=alias):
+                    es.indices.delete(index=index)
+            except NotFoundError:
+                pass
         es.close()
 
 

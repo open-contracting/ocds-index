@@ -1,6 +1,19 @@
 Changelog
 =========
 
+0.4.0 (2026-03-31)
+------------------
+
+Added
+~~~~~
+
+-  :ref:`reindex`: New command
+
+Changed
+~~~~~~~
+
+-  :ref:`index`: Creates an ``ocdsindex_XX-0001`` index and an ``ocdsindex_XX`` alias, instead of an ``ocdsindex_XX`` index.
+
 0.3.0 (2026-03-27)
 ------------------
 

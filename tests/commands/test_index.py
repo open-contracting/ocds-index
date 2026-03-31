@@ -27,7 +27,7 @@ def test_index(tmpdir):
         assert es.indices.exists(index="ocdsindex_en")
         assert es.indices.exists(index="ocdsindex_es")
 
-        assert es.indices.get(index="ocdsindex_en")["ocdsindex_en"]["mappings"] == {
+        assert next(iter(es.indices.get(index="ocdsindex_en").values()))["mappings"] == {
             "properties": {
                 "title": {"analyzer": "english", "type": "text"},
                 "text": {"analyzer": "english", "type": "text"},
@@ -36,7 +36,7 @@ def test_index(tmpdir):
                 "url": {"fields": {"keyword": {"ignore_above": 256, "type": "keyword"}}, "type": "text"},
             }
         }
-        assert es.indices.get(index="ocdsindex_es")["ocdsindex_es"]["mappings"] == {
+        assert next(iter(es.indices.get(index="ocdsindex_es").values()))["mappings"] == {
             "properties": {
                 "title": {"analyzer": "spanish", "type": "text"},
                 "text": {"analyzer": "spanish", "type": "text"},
@@ -54,7 +54,7 @@ def test_index(tmpdir):
 
         assert {
             "_id": "https://standard.open-contracting.org/dev/en/#about",
-            "_index": "ocdsindex_en",
+            "_index": "ocdsindex_en-0001",
             "_score": 1.0,
             "_source": {
                 "title": "Open Contracting Data Standard: Documentation - About",
@@ -66,7 +66,7 @@ def test_index(tmpdir):
         } in hits_en["hits"]
         assert {
             "_id": "https://standard.open-contracting.org/dev/es/#about",
-            "_index": "ocdsindex_es",
+            "_index": "ocdsindex_es-0001",
             "_score": 1.0,
             "_source": {
                 "title": "Estándar de Datos de Contrataciones Abiertas: Documentación - Acerca de",

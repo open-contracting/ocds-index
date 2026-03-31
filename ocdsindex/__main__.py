@@ -11,6 +11,36 @@ from ocdsindex.allow import allow_sphinx
 from ocdsindex.crawler import Crawler
 from ocdsindex.extract import extract_sphinx
 
+LANGUAGE_MAP = {
+    "en": "english",
+    "es": "spanish",
+    "fr": "french",
+    "it": "italian",
+}
+
+
+def create_index(es, index, alias=None):
+    # Remove the common prefix and version suffix.
+    language_code = index.removeprefix("ocdsindex_").partition("-")[0]
+    # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/analysis-lang-analyzer.html
+    language = LANGUAGE_MAP.get(language_code, "standard")
+    kwargs = {
+        "index": index,
+        # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping.html
+        "mappings": {
+            "properties": {
+                "title": {"type": "text", "analyzer": language},
+                "text": {"type": "text", "analyzer": language},
+                "created_at": {"type": "date"},
+                "base_url": {"type": "keyword"},
+            },
+        },
+    }
+    if alias:
+        kwargs["aliases"] = {alias: {}}
+    # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-create-index.html
+    es.indices.create(**kwargs)
+
 
 def connect(host, **kwargs):
     try:
@@ -45,7 +75,7 @@ def sphinx(directory, base_url):
 @click.argument("file", type=click.File())
 def extension_explorer(file):
     """
-    Crawl the Extension Explorer's `extensions.json` file, generate documents to index, assign documents unique
+    Crawl the Extension Explorer's ``extensions.json`` file, generate documents to index, assign documents unique
     URLs, and print the base URL, timestamp, and documents as JSON.
     """
     "https://extensions.open-contracting.org"
@@ -61,18 +91,11 @@ def index(file, host):
     Read a JSON file in which the "base_url" key is the remote URL at which the documents will be accessible, and the
     "documents" key is an object in which the key is a language code and the value is the documents to index.
 
-    The `sphinx` and `extension-explorer` commands create such files.
+    The ``sphinx`` and ``extension-explorer`` commands create such files.
 
-    Connect to Elasticsearch at HOST and, for each language, create an `ocdsindex_XX` index, delete existing
-    documents matching the base URL, and index the new documents in that language.
+    Connect to Elasticsearch and, for each language, create an ``ocdsindex_XX`` alias and ``ocdsindex_XX-0001`` index
+    (if needed), delete existing documents matching the base URL, and index the new documents in that language.
     """
-    language_map = {
-        "en": "english",
-        "es": "spanish",
-        "fr": "french",
-        "it": "italian",
-    }
-
     data = json.load(file)
 
     with connect(host) as es:
@@ -82,22 +105,7 @@ def index(file, host):
             index = f"ocdsindex_{language_code}"
 
             if not es.indices.exists(index=index):
-                # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/analysis-lang-analyzer.html
-                language = language_map.get(language_code, "standard")
-
-                # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-create-index.html
-                es.indices.create(
-                    index=index,
-                    # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping.html
-                    mappings={
-                        "properties": {
-                            "title": {"type": "text", "analyzer": language},
-                            "text": {"type": "text", "analyzer": language},
-                            "created_at": {"type": "date"},
-                            "base_url": {"type": "keyword"},
-                        },
-                    },
-                )
+                create_index(es, f"{index}-0001", alias=index)
 
             # https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete-by-query.html
             es.delete_by_query(index=index, query={"term": {"base_url": data["base_url"]}})
@@ -115,6 +123,36 @@ def index(file, host):
 
 @main.command()
 @click.argument("host")
+def reindex(host):
+    """
+    Reindex documents into new Elasticsearch indices.
+
+    For each ``ocdsindex_XX`` alias, create a new versioned index (``ocdsindex_XX-NNNN``), copy all documents into it,
+    atomically update the alias to point to the new index, and delete the old index.
+    """
+    with connect(host) as es:
+        for result in es.cat.aliases(format="json"):
+            alias = result["alias"]
+            if not alias.startswith("ocdsindex_"):
+                continue
+
+            old_index = result["index"]
+            old_version = int(old_index[len(alias) + 1 :])
+            new_index = f"{alias}-{old_version + 1:04d}"
+
+            create_index(es, new_index)
+            es.reindex(source={"index": old_index}, dest={"index": new_index})
+            es.indices.update_aliases(
+                actions=[
+                    {"add": {"alias": alias, "index": new_index}},
+                    {"remove": {"alias": alias, "index": old_index}},
+                ]
+            )
+            es.indices.delete(index=old_index)
+
+
+@main.command()
+@click.argument("host")
 @click.argument("source")
 @click.argument("destination")
 def copy(host, source, destination):
@@ -122,8 +160,8 @@ def copy(host, source, destination):
     with connect(host) as es:
         body = []
 
-        for index_result in es.cat.indices(format="json"):
-            index = index_result["index"]
+        for result in es.cat.indices(format="json"):
+            index = result["index"]
             for hit in es.search(index=index, size=10000, query={"term": {"base_url": source}})["hits"]["hits"]:
                 document = hit["_source"]
                 for field in ("url", "base_url"):
@@ -147,9 +185,9 @@ def expire(host, exclude_file):
     base_urls = [line.strip() for line in exclude_file] if exclude_file else []
 
     with connect(host) as es:
-        for index_result in es.cat.indices(format="json"):
+        for result in es.cat.indices(format="json"):
             es.delete_by_query(
-                index=index_result["index"],
+                index=result["index"],
                 query={
                     "bool": {
                         "must": {

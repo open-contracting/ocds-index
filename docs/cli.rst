@@ -82,6 +82,27 @@ Example:
 
    ocdsindex index https://user:pass@host:9200 data.json
 
+.. _reindex:
+
+reindex
+-------
+
+Reindexes documents into a new versioned index.
+
+For each ``ocdsindex_XX`` alias, creates a new ``ocdsindex_XX-NNNN`` index, copies all documents into it, atomically updates the alias to point to the new index, and deletes the old index.
+
+.. code-block:: bash
+
+   ocdsindex reindex HOST
+
+-  ``HOST``: the connection URI for Elasticsearch, like ``https://user:pass@host:9200``
+
+Example:
+
+.. code-block:: bash
+
+   ocdsindex reindex https://user:pass@host:9200
+
 .. _copy:
 
 copy
