@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.4.1 (2026-04-01)
+------------------
+
+Fixed
+~~~~~
+
+-  :ref:`reindex`: Increase request timeout for reindex request.
+
 0.4.0 (2026-03-31)
 ------------------
 

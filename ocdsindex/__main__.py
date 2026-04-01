@@ -141,7 +141,7 @@ def reindex(host):
             new_index = f"{alias}-{old_version + 1:04d}"
 
             create_index(es, new_index)
-            es.reindex(source={"index": old_index}, dest={"index": new_index})
+            es.reindex(source={"index": old_index}, dest={"index": new_index}, request_timeout=300)
             es.indices.update_aliases(
                 actions=[
                     {"add": {"alias": alias, "index": new_index}},
