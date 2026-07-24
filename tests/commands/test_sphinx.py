@@ -1,7 +1,7 @@
 import json
-import os.path
 import time
 import traceback
+from pathlib import Path
 
 import pytest
 from click.testing import CliRunner
@@ -14,7 +14,7 @@ def test_sphinx():
     runner = CliRunner()
 
     base_url = "https://standard.open-contracting.org/dev/"
-    result = runner.invoke(main, ["sphinx", os.path.join("tests", "fixtures", "success"), base_url])
+    result = runner.invoke(main, ["sphinx", str(Path("tests", "fixtures", "success")), base_url])
 
     actual = json.loads(result.output)
 

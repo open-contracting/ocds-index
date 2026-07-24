@@ -1,6 +1,7 @@
 import json
 import os
 import traceback
+from pathlib import Path
 
 from click.testing import CliRunner
 
@@ -14,8 +15,7 @@ def test_index(tmpdir):
     runner = CliRunner()
 
     filename = tmpdir.join("data.json")
-    with open(os.path.join("tests", "fixtures", "success", "data.json")) as f:
-        data = json.load(f)
+    data = json.loads(Path("tests", "fixtures", "success", "data.json").read_text())
 
     with elasticsearch(host) as es:
         filename.write(json.dumps(data))

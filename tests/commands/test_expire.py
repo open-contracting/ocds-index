@@ -2,6 +2,7 @@ import json
 import os
 import time
 import traceback
+from pathlib import Path
 
 from click.testing import CliRunner
 
@@ -15,8 +16,7 @@ def test_expire(tmpdir):
     runner = CliRunner()
 
     filename = tmpdir.join("data.json")
-    with open(os.path.join("tests", "fixtures", "success", "data.json")) as f:
-        data = json.load(f)
+    data = json.loads(Path("tests", "fixtures", "success", "data.json").read_text())
 
     exclude_file = tmpdir.join("exclude.txt")
     exclude_file.write("https://standard.open-contracting.org/keep/\n")

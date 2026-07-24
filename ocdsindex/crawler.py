@@ -1,6 +1,6 @@
 import os
 from collections import defaultdict
-from operator import attrgetter
+from pathlib import Path
 from urllib.parse import urljoin
 
 import lxml.html
@@ -37,14 +37,14 @@ class Crawler:
         documents = defaultdict(list)
 
         # The entries are sorted to make it easier to manually test whether output has changed.
-        for entry in sorted(os.scandir(self.directory), key=attrgetter("name")):
+        for entry in sorted(Path(self.directory).iterdir()):
             if not entry.is_dir() or len(entry.name) != 2:  # not an ISO 639-1 language code directory
                 continue
 
-            for root, _, files in os.walk(entry.path):
+            for root, _, files in os.walk(entry):
                 for file in files:
                     if self.allow(root, file):
-                        documents[entry.name].extend(self.get_documents_from_file(os.path.join(root, file)))
+                        documents[entry.name].extend(self.get_documents_from_file(Path(root) / file))
 
         return documents
 
@@ -52,17 +52,17 @@ class Crawler:
         """
         Parse the file's HTML contents, calculate its remote URL, and return the documents to index from the file.
 
-        :param str path: a file path
+        :param path: a file path
+        :type path: pathlib.Path
         :returns: the documents to index
         :rtype: list
         """
-        if not path.endswith(".html"):
+        if path.suffix != ".html":
             return []
 
-        with open(path) as f:
-            content = f.read()
+        content = path.read_text()
 
-        url = urljoin(self.base_url, os.path.relpath(path, self.directory).replace(os.sep, "/"))
+        url = urljoin(self.base_url, path.relative_to(self.directory).as_posix())
         if url.endswith("/index.html"):
             url = url[:-10]
         tree = lxml.html.fromstring(content)

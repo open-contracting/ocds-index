@@ -1,5 +1,5 @@
-import os.path
 from contextlib import contextmanager
+from pathlib import Path
 
 import lxml.html
 from elasticsearch import NotFoundError
@@ -62,8 +62,7 @@ expected = {
 
 
 def parse(*parts):
-    with open(os.path.join("tests", "fixtures", *parts)) as f:
-        return lxml.html.fromstring(f.read())
+    return lxml.html.fromstring(Path("tests", "fixtures", *parts).read_text())
 
 
 @contextmanager
